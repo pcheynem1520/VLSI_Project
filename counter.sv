@@ -1,0 +1,197 @@
+//=========================================================
+// EELE 4054: Digital VLSI Design
+// Authors: Temiloluwa Awe, PJ Cheyne-Miller
+// Date: Nov. 11, 2020
+// Description: A Mealy Finite State Machine state detector
+// 
+// Searches for a series of binary inputs that satisfies
+// 01[0*]1, where 0* is any number of zeros. A 7-segment
+// display will count up the number of times 01[0*]1 is
+// found in a sequence.
+// 
+//=========================================================
+
+module counter(	input		clk_50MHz, 
+		input		rst_n, 
+		input		updown_toggle, 
+		input		ena,
+		input		[5:0] preload, 
+		
+		output	reg	[7:0] DISP0, 
+		output 	reg	[7:0] DISP1, 
+		output	reg	[7:0] DISP0_preload, 
+		output 	reg	[7:0] DISP1_preload, 
+		output	reg	[5:0] count_value_number_show, 
+		output	reg	count_clk_show
+);
+	integer preload_dec = 0;
+	integer count_value_number = 0;
+	reg count_up = 1'b1;
+
+	// for dividing the clock
+	integer count_value_frequency = 0;
+
+	// 50MHz to 2Hz: (50M/2*2)-1 = 12500000-1 = 12499999
+	// change to 12499999 for FPGA, 2 for ModelSim testing
+	integer div_value = 2;
+
+	reg count_clk = 1'b1;
+	integer digit_unit = 0;
+	integer digit_tens = 0;
+
+	always @(posedge clk_50MHz) begin // preloaded value
+		if (!rst_n) begin
+			DISP1 <= 7'b01111111;
+			DISP0 <= 7'b01111111;
+		end
+		else if (ena) begin
+			preload_dec <= preload[5] * 32 + preload[4] * 16 + preload[3] * 8 + preload[2] * 4 + preload[1] * 2 + preload[0] * 1;
+
+			case (preload_dec%10)
+				0:		DISP0_preload <= 7'b1000000;
+				1:		DISP0_preload <= 7'b1111001;
+				2:		DISP0_preload <= 7'b0100100;
+				3:		DISP0_preload <= 7'b0110000;
+				4:		DISP0_preload <= 7'b0011001;
+				5:		DISP0_preload <= 7'b0010010;
+				6:		DISP0_preload <= 7'b0000010;
+				7:		DISP0_preload <= 7'b1111000;
+				8:		DISP0_preload <= 7'b0000000;
+				9:		DISP0_preload <= 7'b0011000;
+				default:	DISP0_preload <= 7'b0000111;
+			endcase
+	
+			case (preload_dec/10)
+				0:		DISP0_preload <= 7'b1000000;
+				1:		DISP0_preload <= 7'b1111001;
+				2:		DISP0_preload <= 7'b0100100;
+				3:		DISP0_preload <= 7'b0110000;
+				4:		DISP0_preload <= 7'b0011001;
+				5:		DISP0_preload <= 7'b0010010;
+				6:		DISP0_preload <= 7'b0000010;
+				7:		DISP0_preload <= 7'b1111000;
+				8:		DISP0_preload <= 7'b0000000;
+				9:		DISP0_preload <= 7'b0011000;
+				default:	DISP0_preload <= 7'b0000111;
+			endcase
+		end
+	end
+
+	always @(posedge clk_50MHz) begin // counting
+		if (updown_toggle) begin
+			count_up <= ~count_up;
+		end
+
+		// if/else-block below can replace if-block above
+		// counts up to preloaded value then back down to 0, then cycle repeats
+
+		/*if (updown_toggle) begin
+			if (count_value_number < preload_dec) begin
+				if (!count_up) begin
+					count_up <= ~count_up;
+				end
+			end
+		end
+
+		else if (count_value_number > preload_dec) begin
+			if (count_up) begin
+				count_up <= ~count_up;
+			end
+		end
+
+		else begin
+			count_up <= count_up;
+		end*/
+	end
+
+	always @(posedge clk_50MHz) begin // count_value_frequency counts from 0 -> div_value continuously
+		if (count_value_frequency == div_value) begin
+			count_value_frequency <= 0;
+		end
+		else begin
+			count_value_frequency <= count_value_frequency + 1;
+		end
+	end
+
+	always @(posedge clk_50MHz) begin // count_clk will toggle each time count_value_frequency reaches div_value
+		if (count_value_frequency == div_value) begin
+			count_clk <= ~count_clk;
+		end
+		else begin
+			count_clk <= ~count_clk;
+		end
+	end
+
+	assign count_clk_show = count_clk;
+
+	always @(posedge count_clk) begin
+		if (!rst_n) begin
+			count_value_number <= 0;
+		end
+		else begin
+			if (ena) begin
+				if (count_up) begin
+					if (count_value_number == preload_dec) begin
+						count_value_number <= 0;
+					end
+					else begin
+						count_value_number <= count_value_number + 1;
+					end
+				end
+				else begin
+					if (count_value_number == 0) begin
+						count_value_number <= preload_dec;
+					end
+					else begin
+						count_value_number <= count_value_number - 1;
+					end
+				end
+			end
+			else begin
+				count_value_number <= count_value_number;
+			end
+		end
+	end
+
+	assign count_value_number_show = count_value_number;
+
+	always @(posedge clk_50MHz) begin // preloaded value
+		if (!rst_n) begin
+			DISP0 <= 7'b01111111;
+			DISP1 <= 7'b01111111;
+
+		end
+		else if (ena) begin
+			digit_unit <= count_value_number % 10;
+			case (digit_unit)
+				0:		DISP0 <= 7'b1000000;
+				1:		DISP0 <= 7'b1111001;
+				2:		DISP0 <= 7'b0100100;
+				3:		DISP0 <= 7'b0110000;
+				4:		DISP0 <= 7'b0011001;
+				5:		DISP0 <= 7'b0010010;
+				6:		DISP0 <= 7'b0000010;
+				7:		DISP0 <= 7'b1111000;
+				8:		DISP0 <= 7'b0000000;
+				9:		DISP0 <= 7'b0011000;
+				default:	DISP0 <= 7'b0000111;
+			endcase
+
+			digit_tens <= count_value_number / 10;
+			case (digit_tens)
+				0:		DISP1 <= 7'b1000000;
+				1:		DISP1 <= 7'b1111001;
+				2:		DISP1 <= 7'b0100100;
+				3:		DISP1 <= 7'b0110000;
+				4:		DISP1 <= 7'b0011001;
+				5:		DISP1 <= 7'b0010010;
+				6:		DISP1 <= 7'b0000010;
+				7:		DISP1 <= 7'b1111000;
+				8:		DISP1 <= 7'b0000000;
+				9:		DISP1 <= 7'b0011000;
+				default:	DISP1 <= 7'b0000111;
+			endcase
+		end
+	end
+
+endmodule

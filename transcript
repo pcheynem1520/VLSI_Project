@@ -1,0 +1,50 @@
+# Compile of project_TB.sv was successful.
+# Compile of detector.sv was successful.
+# 2 compiles, 0 failed with no errors.
+# Compile of project_TB.sv was successful.
+# Compile of detector.sv was successful.
+# Compile of counter.sv was successful with warnings.
+# 3 compiles, 0 failed with no errors.
+# Compile of project_TB.sv was successful.
+# Compile of detector.sv was successful.
+# Compile of counter.sv was successful with warnings.
+# 3 compiles, 0 failed with no errors.
+vsim -gui work.counter work.project_TB
+# vsim -gui work.counter work.project_TB 
+# Start time: 14:24:41 on Nov 23,2020
+# Loading sv_std.std
+# Loading work.counter
+# Loading work.project_TB
+# Compile of project_TB.sv was successful.
+# Compile of detector.sv was successful.
+# Compile of counter.sv was successful with warnings.
+# 3 compiles, 0 failed with no errors.
+vsim -gui work.counter work.project_TB
+# End time: 14:27:27 on Nov 23,2020, Elapsed time: 0:02:46
+# Errors: 0, Warnings: 10
+# vsim -gui work.counter work.project_TB 
+# Start time: 14:27:27 on Nov 23,2020
+# Loading sv_std.std
+# Loading work.counter
+# Loading work.project_TB
+add wave -position insertpoint  \
+sim:/counter/clk_50MHz \
+sim:/counter/rst_n \
+sim:/counter/updown_toggle \
+sim:/counter/ena \
+sim:/counter/preload \
+sim:/counter/DISP0 \
+sim:/counter/DISP1 \
+sim:/counter/DISP0_preload \
+sim:/counter/DISP1_preload \
+sim:/counter/count_value_number_show \
+sim:/counter/count_clk_show \
+sim:/counter/preload_dec \
+sim:/counter/count_value_number \
+sim:/counter/count_up \
+sim:/counter/count_value_frequency \
+sim:/counter/div_value \
+sim:/counter/count_clk \
+sim:/counter/digit_unit \
+sim:/counter/digit_tens
+run 500

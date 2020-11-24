@@ -13,6 +13,8 @@
 
 `timescale 1ns/1ns
 
+// temporary testbench - from lab 4 code
+
 module project_TB;
 	reg		CLOCK_50;
 	reg		RST_n; // key[0]; clear; key[1], toggle mode;
@@ -41,22 +43,6 @@ module project_TB;
 		.DISP0 (DISP0), 
 		.DISP1 (DISP1)
 	);
-
-/*
-	initial begin
-		CLOCK_50 = 1'b0; // start clock at 0
-		RST_n = 1'b1; // reset:0, set:1
-		UPDOWN = 1'b0; // count up:0, count down:1
-		ENA = 1'b1; // disable counter: 0, enable counter: 1
-
-		PRELOAD = 6'b100011; // preloaded value: 100011 -> 35
-		#1000; // wait 1000ns -> 1ms
-	end
-
-	always begin
-		#20 CLOCK_50 = ~CLOCK_50; // set main clock speed to 50MHz
-	end
-*/
 
  	initial begin
     	CLOCK_50 = 1'b0; // start clock at 0

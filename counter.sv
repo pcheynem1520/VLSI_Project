@@ -25,6 +25,7 @@ module counter(
 	output	reg	[5:0] count_value_number_show, 
 	output	reg	count_clk_show
 );
+
 	integer preload_dec = 0;
 	integer count_value_number = 0;
 	reg count_up = 1'b1;

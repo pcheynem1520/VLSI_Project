@@ -11,9 +11,12 @@
 // 
 //=========================================================
 
-module detector(	
+module detector( 
+    input       clk_50MHz // assuming 50MHz clock signal
 );
 
-	
+	always @(posedge clk_50MHz) begin
+        
+    end
 
 endmodule

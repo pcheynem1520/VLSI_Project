@@ -1,8 +1,0 @@
-{D:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/ModelSim/project_TB.sv} {1 {vlog -work work -sv -stats=none {D:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/ModelSim/project_TB.sv}
-Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
--- Compiling module project_TB
-
-Top level modules:
-	project_TB
-
-} {} {}}

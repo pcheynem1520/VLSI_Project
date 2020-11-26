@@ -9,6 +9,8 @@
 // display will count up the number of times 01[0*]1 is
 // found in a sequence.
 // 
+// CIRCUIT DEFINITION FILE
+// 
 //=========================================================
 
 module sequence_detector(
@@ -43,7 +45,7 @@ module sequence_detector(
     end
 
     /* next state logic */
-    
+
 
     /* output logic */
     

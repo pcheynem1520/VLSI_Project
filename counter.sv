@@ -9,6 +9,8 @@
 // display will count up the number of times 01[0*]1 is
 // found in a sequence.
 // 
+// DO NOT USE IN FINAL PROJECT, EXAMPLE CODE ONLY
+// 
 //=========================================================
 
 module counter(

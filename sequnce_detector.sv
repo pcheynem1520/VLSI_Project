@@ -14,19 +14,66 @@
 //=========================================================
 
 module sequence_detector(
-    /* control signals */
+    /* circuit control signals */
 	input   logic   clk, // main clock signal
     input   logic   rst, // reset
     input   logic   ena, // enable
 
-    /* 7-segment display signals */
-    output  logic   [6:0] disp0, // ones digit
-    output  logic   [6:0] disp1, // tens digit
+    /* input signals */
+    input   logic   sig_to_test, // input signal to be tested for 01[0*]1
 
-    /* outputs */
+    /* 7-segment display signals */
+    output  logic   [7:0] disp0, // ones digit
+    output  logic   [7:0] disp1, // tens digit
+
+    /* output signals */
     output  logic   z, // T/F sequence detection
     output  logic   count_detect // counter of times sequence was detected
 );
+
+    /* variable assignments */
+    always_comb
+        /* temporary but functional */
+        case (state)
+            start:
+                if (sig_to_test) begin
+                    next_state = start;
+                end else begin
+                    next_state = first;
+                end
+            first:
+                if (sig_to_test) begin
+                    next_state = second;
+                end else begin
+                    next_state = first;
+                end   
+            second:
+                if (sig_to_test) begin
+                    next_state = success;
+                end else begin
+                    next_state = delay;
+                end    
+            delay:
+                if (sig_to_test) begin
+                    next_state = success_d;
+                end else begin
+                    next_state = delay;
+                end
+            success_d:
+                if (sig_to_test) begin
+                    next_state = success;
+                end else begin
+                    next_state = delay;
+                end
+            success:
+                if (sig_to_test) begin
+                    next_state = start;
+                end else begin
+                    next_state = first;
+                end
+            default: // error -> back to start
+                next_state = start;
+        endcase 
 
     /* states */
     typedef enum logic [2:0]
@@ -57,8 +104,9 @@ module sequence_detector(
             disp1 = 7'b1000000;
         end
 
-        else if (ena) begin // enable signal high, logic enabled
-            case (digit_unit % 10) // 7-segment display control codes for ones unit
+        else if (ena) begin // enable signal high
+            /* 7-segment display control codes for ones unit */
+            case (count_detect % 10) // mod10 for units
 				0:		    DISP0 <= 7'b1000000;
 				1:		    DISP0 <= 7'b1111001;
 				2:		    DISP0 <= 7'b0100100;
@@ -72,7 +120,8 @@ module sequence_detector(
 				default:	DISP0 <= 7'b0000111;
 			endcase
 
-			case (digit_tens / 10) // 7-segment display control codes for tens unit
+            /* 7-segment display control codes for tens unit */
+			case (count_detect / 10) // divide round down for tens
 				0:		    DISP1 <= 7'b1000000;
 				1:		    DISP1 <= 7'b1111001;
 				2:		    DISP1 <= 7'b0100100;

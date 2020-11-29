@@ -21,18 +21,26 @@ module project_TB;
 	logic	RESET; // reset signal
 	logic	ENABLE; // enable signal
 
-	logic	SIGNAL_IN; // input signal from manual, 000100110001011101010011
+	logic	SIGNAL_IN; // input signal
 	
 	logic	[7:0] DISP0; // ones of loaded number
 	logic	[7:0] DISP1; // tens of loaded number
+
+	logic	SEQUENCE_FLAG; // flag triggered when sequence is detected
+	logic	SEQUENCE_COUNTER; // number of times sequence is found between resets
 
 sequence_detector uut(
 	.clk (CLOCK), 
 	.rst (RESET), 
 	.ena (ENABLE), 
+
 	.sig_to_test (SIGNAL_IN), 
-	.DISP0 (DISP0), 
-	.DISP1 (DISP1)
+
+	.disp0 (DISP0), 
+	.disp1 (DISP1), 
+
+	.z (SEQUENCE_FLAG), 
+	.count_detect (SEQUENCE_COUNTER)
 );
 
 	/* test signal */
@@ -103,7 +111,6 @@ sequence_detector uut(
 		SIGNAL_IN <= TEST_SIG[22];
 		#10
 		SIGNAL_IN <= TEST_SIG[23];
-		#10
 	end 
 
 endmodule

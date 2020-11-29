@@ -26,29 +26,27 @@ module project_TB;
 	logic	[7:0] DISP0; // ones of loaded number
 	logic	[7:0] DISP1; // tens of loaded number
 
-	sequence_detector uut(
-		.clk (CLOCK), 
-		.rst (RESET), 
-		.ena (ENABLE), 
-
-		.sig_to_test (SIGNAL_IN), 
-
-		.DISP0 (DISP0), 
-		.DISP1 (DISP1)
-	);
+sequence_detector uut(
+	.clk (CLOCK), 
+	.rst (RESET), 
+	.ena (ENABLE), 
+	.sig_to_test (SIGNAL_IN), 
+	.DISP0 (DISP0), 
+	.DISP1 (DISP1)
+);
 
 	/* test signal */
 	logic	[23:0] TEST_SIG = 24'b000100110001011101010011;
 
 	/* initialize clock signal */
- 	initial begin
-    	CLOCK = 1'b0; // start clock signal low
-    end
+	initial begin
+   		CLOCK = 1'b0; // start clock signal low
+	end
 
 	/* start clock signal */
-    always begin
-        #5 CLOCK = ~CLOCK; // 100MHz, posedge -> posedge
-    end
+	always begin
+        	#5 CLOCK = ~CLOCK; // 100MHz, posedge -> posedge
+	end
  
 	/* runtime signals */
 	initial begin
@@ -57,7 +55,7 @@ module project_TB;
 
 		#50 // wait 50ns/5 clock cycles
 
-		/* 000100110001011101010011 */
+		/* send 000100110001011101010011 */
 		SIGNAL_IN <= TEST_SIG[0];
 		#10
 		SIGNAL_IN <= TEST_SIG[1];
@@ -106,6 +104,6 @@ module project_TB;
 		#10
 		SIGNAL_IN <= TEST_SIG[23];
 		#10
-    end 
+	end 
 
 endmodule

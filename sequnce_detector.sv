@@ -127,7 +127,7 @@ module sequence_detector(
     assign z = (state[1] & state[0] & sig_to_test) | (state[2] & sig_to_test);
 
     /* sequence counter */
-    always @(posedge clk) begin
+    always @(posedge clk) begin // posedge of clk and not z in case z is high twice
         if (z) begin
             count_detect = count_detect + 1;
         end

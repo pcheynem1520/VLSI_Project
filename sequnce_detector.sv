@@ -65,7 +65,6 @@ module sequence_detector(
 
     /* next_state logic */
     always_comb begin
-        /*
         case (state)
             start:
                 if (sig_to_test) begin
@@ -105,12 +104,11 @@ module sequence_detector(
                 end
             default: next_state = start;
         endcase
+        /*
+        next_state[2] <= (state[1] & state[0] & ~sig_to_test) | (state[2] & state[1] & ~sig_to_test) | (state[2] & state[1] & state[0]);
+        next_state[1] <= (~state[2] & state[0] & sig_to_test) | (state[1] & state[0]) | (state[2] & state[1]);
+        next_state[0] <= (~state[2] & ~sig_to_test) | (~state[2] & ~state[1] & state[0]) | (state[1] & ~sig_to_test);
         */
-        //*
-        next_state[2] <= (~sig_to_test) | (~state[1] & state[0]) | (state[2]);
-        next_state[1] <= (state[0] & sig_to_test) | (state[1] & state[0]) | (state[2]);
-        next_state[0] <= (state[1] & state[0] & ~sig_to_test) | (state[2] & ~sig_to_test) | (state[2] & state[0]);
-        //*/
     end
 
     /* flip-flop input logic */

@@ -33,7 +33,9 @@ module sequence_detector(
 
     /* variable assignments */
     logic   [2:0] d_ff; // d flip-flop inputs
+    logic   [2:0] q_ff; // d flip-flop outputs
 
+    /* state register */
     /* states */
     // 000 -> start
     // 001 -> first
@@ -47,7 +49,7 @@ module sequence_detector(
 	{start, first, success, second, unused_0, unused_1, success_delay, delay} statetype;
 	statetype state, next_state;
 
-    /* state register */
+    /* state switch logic */
     always @(posedge clk) begin
         if (rst) begin
            state <= start;
@@ -108,7 +110,8 @@ module sequence_detector(
         d_ff[2] <= (state[2] & state[0]) | (state[2] & sig_to_test) | (state[1] & state[0] & ~sig_to_test);
         d_ff[1] <= (state[1] & state[0]) | (state[0] & sig_to_test) | state[2];
         d_ff[0] <= (~state[1] & state[0]) | (~state[0] & ~sig_to_test) | (state[0] & ~sig_to_test);
-        z <= (state[1] & state[0] & sig_to_test) | (state[2] & sig_to_test);
+        q_ff <= d_ff;
+        z <= q_ff[1] & ~q_ff[0];
     end
 
     /* 7-segment display control logic */

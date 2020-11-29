@@ -42,12 +42,12 @@ module sequence_detector(
     /* states */
     // 000 -> start
     // 001 -> first
-    // 010 -> success
     // 011 -> second
+    // 111 -> delay
+    // 110 -> success_delay
+    // 010 -> success
     // 100 -> null -> error, go to start
     // 101 -> null -> error, go to start
-    // 110 -> success_delay
-    // 111 -> delay
 
     /* state switch logic */
     always @(posedge clk) begin

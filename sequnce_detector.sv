@@ -33,7 +33,6 @@ module sequence_detector(
 
     /* variable assignments */
     logic   [2:0] d_ff; // d flip-flop inputs
-    logic   [2:0] q_ff; // d flip-flop outputs
 
     /* states */
     // 000 -> start
@@ -42,14 +41,14 @@ module sequence_detector(
     // 011 -> second
     // 100 -> null -> error, go to start
     // 101 -> null -> error, go to start
-    // 110 -> success_d
+    // 110 -> success_delay
     // 111 -> delay
     typedef enum logic [2:0]
-	{start, first, success, second, start, start, success_d, delay} statetype;
+	{start, first, success, second, unused_0, unused_1, success_delay, delay} statetype;
 	statetype state, next_state;
 
     /* state register */
-    always_ff begin
+    always @(posedge clk) begin
         if (rst) begin
            state <= start;
            count_detect <= 0;
@@ -64,74 +63,13 @@ module sequence_detector(
 
     /* next state logic */
     always_comb begin
-        /* temporary but functional */
-        /* case (state)
-            start:
-                if (sig_to_test) begin
-                    z <= 0;
-                    next_state = start;
-                end else begin
-                    z <= 0;
-                    next_state = first;
-                end
-            first:
-                if (sig_to_test) begin
-                    z <= 0;
-                    next_state = second;
-                end else begin
-                    z <= 0;
-                    next_state = first;
-                end   
-            second:
-                if (sig_to_test) begin
-                    z <= 1;
-                    next_state = success;
-                end else begin
-                    z <= 0;
-                    next_state = delay;
-                end    
-            delay:
-                if (sig_to_test) begin
-                    z <= 1;
-                    next_state = success_d;
-                end else begin
-                    z <= 0;
-                    next_state = delay;
-                end
-            success_d:
-                if (sig_to_test) begin
-                    z <= 1;
-                    next_state = success;
-                end else begin
-                    z <= 0;
-                    next_state = delay;
-                end
-            success:
-                if (sig_to_test) begin
-                    z <= 0;
-                    next_state = start;
-                end else begin
-                    z <= 0;
-                    next_state = first;
-                end
-            default: // error, go to start
-                next_state = start;
-        endcase */
-
-        assign d_ff[2] = (state[2] & state[0]) | (state[2] & sig_to_test) | (state[1] & state[0] & ~sig_to_test);
-        assign d_ff[1] = (state[1] & state[0]) | (state[0] & sig_to_test) | state[2];
-        assign d_ff[0] = (~state[1] & state[0]) | (~state[0] & ~sig_to_test) | (state[0] & ~sig_to_test);
+        d_ff[2] = (state[2] & state[0]) | (state[2] & sig_to_test) | (state[1] & state[0] & ~sig_to_test);
+        d_ff[1] = (state[1] & state[0]) | (state[0] & sig_to_test) | state[2];
+        d_ff[0] = (~state[1] & state[0]) | (~state[0] & ~sig_to_test) | (state[0] & ~sig_to_test);
     end
 
     /* output logic */
     assign z = (state[1] & state[0] & sig_to_test) | (state[2] & sig_to_test);
-
-    /* sequence counter */
-    always @(posedge clk) begin // posedge of clk and not z in case z is high twice
-        if (z) begin
-            count_detect = count_detect + 1;
-        end
-    end
 
     /* 7-segment display control logic */
     always @(posedge clk) begin 
@@ -143,32 +81,32 @@ module sequence_detector(
         else if (ena) begin // enable signal high
             /* 7-segment display control codes for ones unit */
             case (count_detect % 10) // mod10 for units
-				0:		    DISP0 <= 7'b1000000;
-				1:		    DISP0 <= 7'b1111001;
-				2:		    DISP0 <= 7'b0100100;
-				3:		    DISP0 <= 7'b0110000;
-				4:		    DISP0 <= 7'b0011001;
-				5:		    DISP0 <= 7'b0010010;
-				6:		    DISP0 <= 7'b0000010;
-				7:		    DISP0 <= 7'b1111000;
-				8:		    DISP0 <= 7'b0000000;
-				9:		    DISP0 <= 7'b0011000;
-				default:	DISP0 <= 7'b0000111;
+				0:		    disp0 <= 7'b1000000;
+				1:		    disp0 <= 7'b1111001;
+				2:		    disp0 <= 7'b0100100;
+				3:		    disp0 <= 7'b0110000;
+				4:		    disp0 <= 7'b0011001;
+				5:		    disp0 <= 7'b0010010;
+				6:		    disp0 <= 7'b0000010;
+				7:		    disp0 <= 7'b1111000;
+				8:		    disp0 <= 7'b0000000;
+				9:		    disp0 <= 7'b0011000;
+				default:	disp0 <= 7'b0000111;
 			endcase
 
             /* 7-segment display control codes for tens unit */
 			case (count_detect / 10) // divide round down for tens
-				0:		    DISP1 <= 7'b1000000;
-				1:		    DISP1 <= 7'b1111001;
-				2:		    DISP1 <= 7'b0100100;
-				3:		    DISP1 <= 7'b0110000;
-				4:		    DISP1 <= 7'b0011001;
-				5:		    DISP1 <= 7'b0010010;
-				6:		    DISP1 <= 7'b0000010;
-				7:		    DISP1 <= 7'b1111000;
-				8:		    DISP1 <= 7'b0000000;
-				9:		    DISP1 <= 7'b0011000;
-				default:	DISP1 <= 7'b0000111;
+				0:		    disp1 <= 7'b1000000;
+				1:		    disp1 <= 7'b1111001;
+				2:		    disp1 <= 7'b0100100;
+				3:		    disp1 <= 7'b0110000;
+				4:		    disp1 <= 7'b0011001;
+				5:		    disp1 <= 7'b0010010;
+				6:		    disp1 <= 7'b0000010;
+				7:		    disp1 <= 7'b1111000;
+				8:		    disp1 <= 7'b0000000;
+				9:		    disp1 <= 7'b0011000;
+				default:	disp1 <= 7'b0000111;
 			endcase
         end
     end

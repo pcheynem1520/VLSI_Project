@@ -11,77 +11,102 @@ cModel Technology
 dC:/intelFPGA/20.1
 vcounter
 Z0 DXx6 sv_std 3 std 0 22 VYECXdT12H8WgbUP_5Y6:3
-!s110 1606159637
+Z1 !s110 1606681853
 !i10b 1
-!s100 Y__oTRT<TcoREeclLV]H>2
-Z1 !s11b Dg1SIo80bB@j0V0VzS_@n1
-IOBi>n^oDdNmN_IeENPNhU0
-Z2 VDg1SIo80bB@j0V0VzS_@n1
+!s100 gXl97E3O=Ql@BiAO`W5[e2
+Z2 !s11b Dg1SIo80bB@j0V0VzS_@n1
+IeN`GofV`mj^HMUi043HLM0
+Z3 VDg1SIo80bB@j0V0VzS_@n1
 S1
-Z3 dD:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/ModelSim
-w1606159628
+Z4 dD:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/VLSI_Project
+w1606431077
 8D:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/ModelSim/counter.sv
 FD:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/ModelSim/counter.sv
-!i122 10
-L0 14 184
-Z4 OV;L;2020.1;71
+!i122 98
+L0 14 186
+Z5 OV;L;2020.1;71
 r1
 !s85 0
 31
-!s108 1606159637.000000
+Z6 !s108 1606681853.000000
 !s107 D:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/ModelSim/counter.sv|
 !s90 -reportprogress|300|-work|work|-sv|-stats=none|D:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/ModelSim/counter.sv|
 !i113 1
-Z5 o-work work -sv
-Z6 tCvgOpt 0
+Z7 o-work work -sv
+Z8 tCvgOpt 0
 vdetector
 R0
-Z7 !s110 1606159636
+!s110 1606159636
 !i10b 1
 !s100 bD@5PJiXo=zKC:LDhN[OL0
-R1
-Iai6L<=O7MFfIl^B9@jDkD0
 R2
-S1
+Iai6L<=O7MFfIl^B9@jDkD0
 R3
+S1
+dD:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/ModelSim
 w1606157407
 8D:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/ModelSim/detector.sv
 FD:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/ModelSim/detector.sv
 !i122 9
 L0 14 6
-R4
+R5
 r1
 !s85 0
 31
-Z8 !s108 1606159636.000000
+!s108 1606159636.000000
 !s107 D:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/ModelSim/detector.sv|
 !s90 -reportprogress|300|-work|work|-sv|-stats=none|D:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/ModelSim/detector.sv|
 !i113 1
-R5
-R6
+R7
+R8
 vproject_TB
 R0
-R7
-!i10b 1
-!s100 `21Ti3RX8B6BU]QL3@XcZ2
 R1
-IY2MlCKaCYh?0o2>o5zf0l0
+!i10b 1
+!s100 F??n5=LkBQA;bS=MK8W8K0
 R2
-S1
+IQ^dU9R:W5cRhMl[KI4z5K0
 R3
-w1606159453
-8D:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/ModelSim/project_TB.sv
-FD:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/ModelSim/project_TB.sv
-!i122 8
-L0 16 44
+S1
 R4
+w1606681833
+8D:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/VLSI_Project/project_TB.sv
+FD:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/VLSI_Project/project_TB.sv
+!i122 100
+L0 19 112
+R5
 r1
 !s85 0
 31
-R8
-!s107 D:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/ModelSim/project_TB.sv|
-!s90 -reportprogress|300|-work|work|-sv|-stats=none|D:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/ModelSim/project_TB.sv|
-!i113 1
-R5
 R6
+!s107 D:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/VLSI_Project/project_TB.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|D:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/VLSI_Project/project_TB.sv|
+!i113 1
+R7
+R8
 nproject_@t@b
+vsequence_detector
+R0
+R1
+!i10b 1
+!s100 >MzYJgK8@<>H_5XBAfm7A3
+R2
+I8_;j1M_4;TfKhgB?;Q4J_2
+R3
+S1
+R4
+w1606681840
+8D:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/VLSI_Project/sequnce_detector.sv
+FD:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/VLSI_Project/sequnce_detector.sv
+!i122 99
+L0 16 160
+R5
+r1
+!s85 0
+31
+R6
+!s107 D:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/VLSI_Project/sequnce_detector.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|D:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/VLSI_Project/sequnce_detector.sv|
+!i113 1
+R7
+R8

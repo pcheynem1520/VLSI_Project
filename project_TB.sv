@@ -9,69 +9,122 @@
 // display will count up the number of times 01[0*]1 is
 // found in a sequence.
 // 
+// TESTBENCH FILE
+// 
 //=========================================================
 
 `timescale 1ns/1ns
 
-// temporary testbench - from lab 4 code
-
+/* testbench sinals */
 module project_TB;
-	reg		CLOCK_50;
-	reg		RST_n; // key[0]; clear; key[1], toggle mode;
-	reg		UPDOWN; 
-	reg		ENA; // SW[0]; enable; SW[5:1], load;
-	reg		COUNT_clk_chow; 
-	reg		[5:0] PRELOAD; // LEDR[0]; enable LED; LEDR[5:1], load LED;
-	reg		[5:0] COUNT_value_number_show;
+	logic	CLOCK; // clock signal
+	logic	RESET; // reset signal
+	logic	ENABLE; // enable signal
 
-	wire	[7:0] DISP0_PRELOAD; // ones of count number
-	wire	[7:0] DISP1_PRELOAD; // tens of count number
-	wire	[7:0] DISP0; // ones of loaded number
-	wire	[7:0] DISP1; // tens of loaded number
+	logic	SIGNAL_IN; // input signal
+	
+	logic	[6:0] DISP0; // ones of loaded number
+	logic	[6:0] DISP1; // tens of loaded number
 
-	counter uut(
-		.clk_50MHz (CLOCK_50), 
-		.rst_n (RST_n), 
-		.updown_toggle (UPDOWN), 
-		.ena (ENA), 
-		.count_clk_show (COUNT_clk_chow), 
-		.preload (PRELOAD), 
-		.count_value_number_show (COUNT_value_number_show), 
+	logic	SEQUENCE_FLAG; // flag triggered when sequence is detected
+	logic	SEQUENCE_COUNTER; // number of times sequence is found between resets
 
-		.DISP0_preload (DISP0_PRELOAD), 
-		.DISP1_preload (DISP1_PRELOAD), 
-		.DISP0 (DISP0), 
-		.DISP1 (DISP1)
-	);
+sequence_detector uut(
+	.clk (CLOCK), 
+	.rst (RESET), 
+	.ena (ENABLE), 
 
- 	initial begin
-    	CLOCK_50 = 1'b0; // start clock at 0
-    end
+	.sig_to_test (SIGNAL_IN), 
 
-    always begin
-        #20 CLOCK_50 = ~CLOCK_50;
-    end
+	.disp0 (DISP0), 
+	.disp1 (DISP1), 
+
+	.z (SEQUENCE_FLAG)
+);
+
+	/* state names and numbers*/
+    typedef enum logic [2:0]
+	{start, first, success, second, unused_0, unused_1, success_delay, delay} statetype;
+	statetype state, next_state;
+
+	/* test signal */
+	logic	[0:23] TEST_SIG = 24'b000100110001011101010011; // LSB -> MSB for readability of passing signal
+
+	/* initialize clock signal */
+	initial begin
+   		CLOCK = 1'b1; // start clock signal high
+	end
+
+	/* start clock signal */
+	always begin
+        	#5 CLOCK = ~CLOCK; // 100MHz, posedge -> posedge
+	end
  
-	initial begin 
-		RST_n = 1'b1; // reset:0, set:1
-		UPDOWN = 1'b0; // count up:0, count down:1
-		ENA = 1'b1; // disable counter: 0, enable counter: 1
+	/* runtime signals */
+	initial begin
+		/* initialisation */
+		RESET <= 1'b0; // set:0, reset:1
+		ENABLE <= 1'b1; // disable counter: 0, enable counter: 1
+		SEQUENCE_FLAG <= 1'b0; // initialise detection flag at 0
+		SEQUENCE_COUNTER <= 0; // initialise counter at 0
 
-		PRELOAD = 6'b100011; // preloaded value: 100011 -> 35
-		#1000; // wait 1000ns -> 1ms
+		#10 // wait 10ns/1 clock cycles
 
-		//#10000  
+		/* send test signal */
+		SIGNAL_IN <= TEST_SIG[0];
+		#10
+		SIGNAL_IN <= TEST_SIG[1];
+		#10
+		SIGNAL_IN <= TEST_SIG[2];
+		#10
+		SIGNAL_IN <= TEST_SIG[3];
+		#10
+		SIGNAL_IN <= TEST_SIG[4];
+		#10
+		SIGNAL_IN <= TEST_SIG[5];
+		#10
+		SIGNAL_IN <= TEST_SIG[6];
+		#10
+		SIGNAL_IN <= TEST_SIG[7];
+		#10
+		SIGNAL_IN <= TEST_SIG[8];
+		#10
+		SIGNAL_IN <= TEST_SIG[9];
+		#10
+		SIGNAL_IN <= TEST_SIG[10];
+		#10
+		SIGNAL_IN <= TEST_SIG[11];
+		#10
+		SIGNAL_IN <= TEST_SIG[12];
+		#10
+		SIGNAL_IN <= TEST_SIG[13];
+		#10
+		SIGNAL_IN <= TEST_SIG[14];
+		#10
+		SIGNAL_IN <= TEST_SIG[15];
+		#10
+		SIGNAL_IN <= TEST_SIG[16];
+		#10
+		SIGNAL_IN <= TEST_SIG[17];
+		#10
+		SIGNAL_IN <= TEST_SIG[18];
+		#10
+		SIGNAL_IN <= TEST_SIG[19];
+		#10
+		SIGNAL_IN <= TEST_SIG[20];
+		#10
+		SIGNAL_IN <= TEST_SIG[21];
+		#10
+		SIGNAL_IN <= TEST_SIG[22];
+		#10
+		SIGNAL_IN <= TEST_SIG[23];
 
-		RST_n=1'b0;		//clear, no toggle: wrong output : as rest is very fast
+		/* halt */
 		#50
-		RST_n=1'b1; 
-		#500
-		RST_n = 1'b0;
-		#140
-		RST_n = 1'b1;
-		#1000
-
-		UPDOWN = 1'b1;
-    end 
+		RESET <= 1'b1;
+		ENABLE <= 1'b0;
+		#10
+		RESET <= 1'b0;
+	end 
 
 endmodule

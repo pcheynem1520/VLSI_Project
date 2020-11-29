@@ -9,6 +9,8 @@
 // display will count up the number of times 01[0*]1 is
 // found in a sequence.
 // 
+// DO NOT USE IN FINAL PROJECT, EXAMPLE CODE ONLY
+// 
 //=========================================================
 
 module counter(
@@ -157,7 +159,7 @@ module counter(
 
 	assign count_value_number_show = count_value_number; // preparing count_value_number_show to be displayed for debugging purposes
 
-	always @(posedge clk_50MHz) begin // preloaded value
+	always @(posedge clk_50MHz) begin
 		if (!rst_n) begin // display "00" on 7-segs when counter is reset
 			DISP0 <= 7'b01111111;
 			DISP1 <= 7'b01111111;

@@ -1,0 +1,53 @@
+# Compile of counter.sv was successful with warnings.
+# Compile of sequnce_detector.sv was successful.
+# Compile of project_TB.sv was successful.
+# 3 compiles, 0 failed with no errors.
+vsim -gui work.project_TB work.sequence_detector
+# vsim -gui work.project_TB work.sequence_detector 
+# Start time: 23:16:10 on Nov 28,2020
+# Loading sv_std.std
+# Loading work.project_TB
+# Loading work.sequence_detector
+# ** Error: (vsim-3063) Port 'DISP0' not found in the connected module (5th connection).
+#    Time: 0 ns  Iteration: 0  Instance: /project_TB/uut File: D:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/VLSI_Project/project_TB.sv Line: 32
+# ** Error: (vsim-3063) Port 'DISP1' not found in the connected module (6th connection).
+#    Time: 0 ns  Iteration: 0  Instance: /project_TB/uut File: D:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/VLSI_Project/project_TB.sv Line: 32
+# Error loading design
+# End time: 23:16:10 on Nov 28,2020, Elapsed time: 0:00:00
+# Errors: 2, Warnings: 2
+# Compile of counter.sv was successful with warnings.
+# Compile of sequnce_detector.sv was successful.
+# Compile of project_TB.sv was successful.
+# 3 compiles, 0 failed with no errors.
+vsim -gui work.project_TB work.sequence_detector
+# vsim -gui work.project_TB work.sequence_detector 
+# Start time: 23:17:44 on Nov 28,2020
+# Loading sv_std.std
+# Loading work.project_TB
+# Loading work.sequence_detector
+add wave -position insertpoint sim:/project_TB/uut/*
+# ** Warning: (vsim-WLF-5000) WLF file currently in use: vsim.wlf
+#           File in use by: pchey  Hostname: APOLLO  ProcessID: 3372
+#           Attempting to use alternate WLF file "./wlftemrks9".
+# ** Warning: (vsim-WLF-5001) Could not open WLF file: vsim.wlf
+#           Using alternate file: ./wlftemrks9
+run 1000
+# Compile of counter.sv was successful with warnings.
+# Compile of sequnce_detector.sv was successful.
+# Compile of project_TB.sv was successful.
+# 3 compiles, 0 failed with no errors.
+vsim -gui work.project_TB work.sequence_detector
+# End time: 23:20:54 on Nov 28,2020, Elapsed time: 0:03:10
+# Errors: 0, Warnings: 5
+# vsim -gui work.project_TB work.sequence_detector 
+# Start time: 23:20:54 on Nov 28,2020
+# Loading sv_std.std
+# Loading work.project_TB
+# Loading work.sequence_detector
+add wave -position insertpoint sim:/project_TB/uut/*
+# ** Warning: (vsim-WLF-5000) WLF file currently in use: vsim.wlf
+#           File in use by: pchey  Hostname: APOLLO  ProcessID: 3372
+#           Attempting to use alternate WLF file "./wlfti6e3qi".
+# ** Warning: (vsim-WLF-5001) Could not open WLF file: vsim.wlf
+#           Using alternate file: ./wlfti6e3qi
+run 500

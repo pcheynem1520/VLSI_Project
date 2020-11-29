@@ -36,6 +36,9 @@ module sequence_detector(
     integer count_detect = 0; // counter of times sequence was detected
 
     /* state register */
+    typedef enum logic [2:0]
+	{start, first, success, second, unused_0, unused_1, success_delay, delay} statetype;
+	statetype state, next_state;
     /* states */
     // 000 -> start
     // 001 -> first
@@ -45,9 +48,6 @@ module sequence_detector(
     // 101 -> null -> error, go to start
     // 110 -> success_delay
     // 111 -> delay
-    typedef enum logic [2:0]
-	{start, first, success, second, unused_0, unused_1, success_delay, delay} statetype;
-	statetype state, next_state;
 
     /* state switch logic */
     always @(posedge clk) begin
@@ -65,7 +65,7 @@ module sequence_detector(
 
     /* next_state logic */
     always_comb begin
-        ///*
+        /* next-state swtich statement */
         case (state)
             start:
                 if (sig_to_test) begin
@@ -105,7 +105,7 @@ module sequence_detector(
                 end
             default: next_state = start;
         endcase
-        //*/
+        /* combinational next-state logic */
         /*
         next_state[2] <= (~sig_to_test) | (~state[1] & state[0]) | (state[2]);
         next_state[1] <= (state[0] & sig_to_test) | (state[1] & state[0]) | (state[2]);

@@ -21,43 +21,56 @@ module project_TB;
 	logic	RESET; // reset signal
 	logic	ENABLE; // enable signal
 
-	logic	SIGNAL_IN; // input signal from manual, 000100110001011101010011
+	logic	SIGNAL_IN; // input signal
 	
-	logic	[7:0] DISP0; // ones of loaded number
-	logic	[7:0] DISP1; // tens of loaded number
+	logic	[6:0] DISP0; // ones of loaded number
+	logic	[6:0] DISP1; // tens of loaded number
 
-	sequence_detector uut(
-		.clk (CLOCK), 
-		.rst (RESET), 
-		.ena (ENABLE), 
+	logic	SEQUENCE_FLAG; // flag triggered when sequence is detected
+	logic	SEQUENCE_COUNTER; // number of times sequence is found between resets
 
-		.sig_to_test (SIGNAL_IN), 
+sequence_detector uut(
+	.clk (CLOCK), 
+	.rst (RESET), 
+	.ena (ENABLE), 
 
-		.DISP0 (DISP0), 
-		.DISP1 (DISP1)
-	);
+	.sig_to_test (SIGNAL_IN), 
+
+	.disp0 (DISP0), 
+	.disp1 (DISP1), 
+
+	.z (SEQUENCE_FLAG)
+);
+
+	/* state names and numbers*/
+    typedef enum logic [2:0]
+	{start, first, success, second, unused_0, unused_1, success_delay, delay} statetype;
+	statetype state, next_state;
 
 	/* test signal */
-	logic	[23:0] TEST_SIG = 24'b000100110001011101010011;
+	logic	[0:23] TEST_SIG = 24'b000100110001011101010011; // LSB -> MSB for readability of passing signal
 
 	/* initialize clock signal */
- 	initial begin
-    	CLOCK = 1'b0; // start clock signal low
-    end
+	initial begin
+   		CLOCK = 1'b1; // start clock signal high
+	end
 
 	/* start clock signal */
-    always begin
-        #5 CLOCK = ~CLOCK; // 100MHz, posedge -> posedge
-    end
+	always begin
+        	#5 CLOCK = ~CLOCK; // 100MHz, posedge -> posedge
+	end
  
 	/* runtime signals */
 	initial begin
+		/* initialisation */
 		RESET <= 1'b0; // set:0, reset:1
 		ENABLE <= 1'b1; // disable counter: 0, enable counter: 1
+		SEQUENCE_FLAG <= 1'b0; // initialise detection flag at 0
+		SEQUENCE_COUNTER <= 0; // initialise counter at 0
 
-		#50 // wait 50ns/5 clock cycles
+		#10 // wait 10ns/1 clock cycles
 
-		/* 000100110001011101010011 */
+		/* send test signal */
 		SIGNAL_IN <= TEST_SIG[0];
 		#10
 		SIGNAL_IN <= TEST_SIG[1];
@@ -105,7 +118,13 @@ module project_TB;
 		SIGNAL_IN <= TEST_SIG[22];
 		#10
 		SIGNAL_IN <= TEST_SIG[23];
+
+		/* halt */
+		#50
+		RESET <= 1'b1;
+		ENABLE <= 1'b0;
 		#10
-    end 
+		RESET <= 1'b0;
+	end 
 
 endmodule

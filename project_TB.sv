@@ -128,3 +128,4 @@ sequence_detector uut(
 	end 
 
 endmodule
+

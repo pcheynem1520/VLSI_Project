@@ -61,15 +61,55 @@ module sequence_detector(
         end
     end
 
-    /* next state logic */
     always_comb begin
-        d_ff[2] = (state[2] & state[0]) | (state[2] & sig_to_test) | (state[1] & state[0] & ~sig_to_test);
-        d_ff[1] = (state[1] & state[0]) | (state[0] & sig_to_test) | state[2];
-        d_ff[0] = (~state[1] & state[0]) | (~state[0] & ~sig_to_test) | (state[0] & ~sig_to_test);
+        case (state)
+            start:
+                if (sig_to_test) begin
+                    next_state = start;
+                end else begin
+                    next_state = first;
+                end
+            first:
+                if (sig_to_test) begin
+                    next_state = second;
+                end else begin
+                    next_state = first;
+                end
+            second:
+                if (sig_to_test) begin
+                    next_state = success;
+                end else begin
+                    next_state = delay;
+                end
+            delay:
+                if (sig_to_test) begin
+                    next_state = success_delay;
+                end else begin
+                    next_state = delay;
+                end
+            success_delay:
+                if (sig_to_test) begin
+                    next_state = success;
+                end else begin
+                    next_state = delay;
+                end
+            success:
+                if (sig_to_test) begin
+                    next_state = start;
+                end else begin
+                    next_state = first;
+                end
+            default: next_state = start;
+        endcase
     end
 
-    /* output logic */
-    assign z = (state[1] & state[0] & sig_to_test) | (state[2] & sig_to_test);
+    /* output equations */
+    always @(posedge clk) begin
+        d_ff[2] <= (state[2] & state[0]) | (state[2] & sig_to_test) | (state[1] & state[0] & ~sig_to_test);
+        d_ff[1] <= (state[1] & state[0]) | (state[0] & sig_to_test) | state[2];
+        d_ff[0] <= (~state[1] & state[0]) | (~state[0] & ~sig_to_test) | (state[0] & ~sig_to_test);
+        z <= (state[1] & state[0] & sig_to_test) | (state[2] & sig_to_test);
+    end
 
     /* 7-segment display control logic */
     always @(posedge clk) begin 

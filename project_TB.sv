@@ -23,8 +23,8 @@ module project_TB;
 
 	logic	SIGNAL_IN; // input signal
 	
-	logic	[7:0] DISP0; // ones of loaded number
-	logic	[7:0] DISP1; // tens of loaded number
+	logic	[6:0] DISP0; // ones of loaded number
+	logic	[6:0] DISP1; // tens of loaded number
 
 	logic	SEQUENCE_FLAG; // flag triggered when sequence is detected
 	logic	SEQUENCE_COUNTER; // number of times sequence is found between resets
@@ -39,8 +39,7 @@ sequence_detector uut(
 	.disp0 (DISP0), 
 	.disp1 (DISP1), 
 
-	.z (SEQUENCE_FLAG), 
-	.count_detect (SEQUENCE_COUNTER)
+	.z (SEQUENCE_FLAG)
 );
 
 	/* state names and numbers*/
@@ -53,7 +52,7 @@ sequence_detector uut(
 
 	/* initialize clock signal */
 	initial begin
-   		CLOCK = 1'b0; // start clock signal low
+   		CLOCK = 1'b1; // start clock signal high
 	end
 
 	/* start clock signal */
@@ -64,7 +63,7 @@ sequence_detector uut(
 	/* runtime signals */
 	initial begin
 		/* initialisation */
-		RESET <= 1'b1; // set:0, reset:1
+		RESET <= 1'b0; // set:0, reset:1
 		ENABLE <= 1'b1; // disable counter: 0, enable counter: 1
 		SEQUENCE_FLAG <= 1'b0; // initialise detection flag at 0
 		SEQUENCE_COUNTER <= 0; // initialise counter at 0
@@ -121,6 +120,7 @@ sequence_detector uut(
 		SIGNAL_IN <= TEST_SIG[23];
 
 		/* halt */
+		#50
 		RESET <= 1'b1;
 		ENABLE <= 1'b0;
 		#10

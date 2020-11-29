@@ -23,17 +23,17 @@ module sequence_detector(
     input   logic   sig_to_test, // input signal to be tested for 01[0*]1
 
     /* 7-segment display signals */
-    output  logic   [7:0] disp0, // ones digit
-    output  logic   [7:0] disp1, // tens digit
+    output  logic   [6:0] disp0, // ones digit
+    output  logic   [6:0] disp1, // tens digit
 
     /* output signals */
-    output  logic   z, // T/F sequence detection
-    output  logic   count_detect // counter of times sequence was detected
+    output  logic   z // T/F sequence detection
 );
 
     /* variable assignments */
     logic   [2:0] d_ff; // d flip-flop inputs
     logic   [2:0] q_ff; // d flip-flop outputs
+    integer count_detect = 0; // counter of times sequence was detected
 
     /* state register */
     /* states */
@@ -63,7 +63,9 @@ module sequence_detector(
         end
     end
 
+    /* next_state logic */
     always_comb begin
+        ///*
         case (state)
             start:
                 if (sig_to_test) begin
@@ -103,14 +105,30 @@ module sequence_detector(
                 end
             default: next_state = start;
         endcase
+        //*/
+        /*
+        next_state[2] <= (~sig_to_test) | (~state[1] & state[0]) | (state[2]);
+        next_state[1] <= (state[0] & sig_to_test) | (state[1] & state[0]) | (state[2]);
+        next_state[0] <= (state[1] & state[0] & ~sig_to_test) | (state[2] & ~sig_to_test) | (state[2] & state[0]);
+        */
     end
 
-    /* output equations */
-    always @(posedge clk) begin
+    /* flip-flop input logic */
+    always_comb begin
         d_ff[2] <= (state[2] & state[0]) | (state[2] & sig_to_test) | (state[1] & state[0] & ~sig_to_test);
         d_ff[1] <= (state[1] & state[0]) | (state[0] & sig_to_test) | state[2];
-        d_ff[0] <= (~state[1] & state[0]) | (~state[0] & ~sig_to_test) | (state[0] & ~sig_to_test);
-        q_ff <= d_ff;
+        d_ff[0] = ~sig_to_test | (~state[1] & state[0]);
+    end
+
+    /* D flip-flops */
+    always @(posedge clk) begin
+        q_ff[2] <= d_ff[2];
+        q_ff[1] <= d_ff[1];
+        q_ff[0] <= d_ff[0];
+    end
+
+    /* output logic */
+    always_comb begin
         z <= q_ff[1] & ~q_ff[0];
     end
 

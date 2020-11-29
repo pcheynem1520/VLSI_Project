@@ -32,52 +32,20 @@ module sequence_detector(
 );
 
     /* variable assignments */
-    always_comb
-        /* temporary but functional */
-        case (state)
-            start:
-                if (sig_to_test) begin
-                    next_state = start;
-                end else begin
-                    next_state = first;
-                end
-            first:
-                if (sig_to_test) begin
-                    next_state = second;
-                end else begin
-                    next_state = first;
-                end   
-            second:
-                if (sig_to_test) begin
-                    next_state = success;
-                end else begin
-                    next_state = delay;
-                end    
-            delay:
-                if (sig_to_test) begin
-                    next_state = success_d;
-                end else begin
-                    next_state = delay;
-                end
-            success_d:
-                if (sig_to_test) begin
-                    next_state = success;
-                end else begin
-                    next_state = delay;
-                end
-            success:
-                if (sig_to_test) begin
-                    next_state = start;
-                end else begin
-                    next_state = first;
-                end
-            default: // error -> back to start
-                next_state = start;
-        endcase 
+    logic   [2:0] d_ff; // d flip-flop inputs
+    logic   [2:0] q_ff; // d flip-flop outputs
 
     /* states */
+    // 000 -> start
+    // 001 -> first
+    // 010 -> success
+    // 011 -> second
+    // 100 -> null -> error, go to start
+    // 101 -> null -> error, go to start
+    // 110 -> success_d
+    // 111 -> delay
     typedef enum logic [2:0]
-	{start, first, second, delay, success_d, success} statetype;
+	{start, first, success, second, start, start, success_d, delay} statetype;
 	statetype state, next_state;
 
     /* state register */
@@ -88,14 +56,82 @@ module sequence_detector(
         end
         else begin
            state <= next_state; 
+           if (z) begin
+               count_detect <= count_detect + 1;
+           end
         end
     end
 
     /* next state logic */
+    always_comb begin
+        /* temporary but functional */
+        /* case (state)
+            start:
+                if (sig_to_test) begin
+                    z <= 0;
+                    next_state = start;
+                end else begin
+                    z <= 0;
+                    next_state = first;
+                end
+            first:
+                if (sig_to_test) begin
+                    z <= 0;
+                    next_state = second;
+                end else begin
+                    z <= 0;
+                    next_state = first;
+                end   
+            second:
+                if (sig_to_test) begin
+                    z <= 1;
+                    next_state = success;
+                end else begin
+                    z <= 0;
+                    next_state = delay;
+                end    
+            delay:
+                if (sig_to_test) begin
+                    z <= 1;
+                    next_state = success_d;
+                end else begin
+                    z <= 0;
+                    next_state = delay;
+                end
+            success_d:
+                if (sig_to_test) begin
+                    z <= 1;
+                    next_state = success;
+                end else begin
+                    z <= 0;
+                    next_state = delay;
+                end
+            success:
+                if (sig_to_test) begin
+                    z <= 0;
+                    next_state = start;
+                end else begin
+                    z <= 0;
+                    next_state = first;
+                end
+            default: // error, go to start
+                next_state = start;
+        endcase */
 
+        assign d_ff[2] = (state[2] & state[0]) | (state[2] & sig_to_test) | (state[1] & state[0] & ~sig_to_test);
+        assign d_ff[1] = (state[1] & state[0]) | (state[0] & sig_to_test) | state[2];
+        assign d_ff[0] = (~state[1] & state[0]) | (~state[0] & ~sig_to_test) | (state[0] & ~sig_to_test);
+    end
 
     /* output logic */
-    
+    assign z = (state[1] & state[0] & sig_to_test) | (state[2] & sig_to_test);
+
+    /* sequence counter */
+    always @(posedge clk) begin
+        if (z) begin
+            count_detect = count_detect + 1;
+        end
+    end
 
     /* 7-segment display control logic */
     always @(posedge clk) begin 

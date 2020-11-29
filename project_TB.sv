@@ -43,8 +43,13 @@ sequence_detector uut(
 	.count_detect (SEQUENCE_COUNTER)
 );
 
+	/* state names and numbers*/
+    typedef enum logic [2:0]
+	{start, first, success, second, unused_0, unused_1, success_delay, delay} statetype;
+	statetype state, next_state;
+
 	/* test signal */
-	logic	[23:0] TEST_SIG = 24'b000100110001011101010011;
+	logic	[0:23] TEST_SIG = 24'b000100110001011101010011; // LSB -> MSB for readability of passing signal
 
 	/* initialize clock signal */
 	initial begin
@@ -58,12 +63,15 @@ sequence_detector uut(
  
 	/* runtime signals */
 	initial begin
-		RESET <= 1'b0; // set:0, reset:1
+		/* initialisation */
+		RESET <= 1'b1; // set:0, reset:1
 		ENABLE <= 1'b1; // disable counter: 0, enable counter: 1
+		SEQUENCE_FLAG <= 1'b0; // initialise detection flag at 0
+		SEQUENCE_COUNTER <= 0; // initialise counter at 0
 
-		#50 // wait 50ns/5 clock cycles
+		#10 // wait 10ns/1 clock cycles
 
-		/* send 000100110001011101010011 */
+		/* send test signal */
 		SIGNAL_IN <= TEST_SIG[0];
 		#10
 		SIGNAL_IN <= TEST_SIG[1];
@@ -111,6 +119,12 @@ sequence_detector uut(
 		SIGNAL_IN <= TEST_SIG[22];
 		#10
 		SIGNAL_IN <= TEST_SIG[23];
+
+		/* halt */
+		RESET <= 1'b1;
+		ENABLE <= 1'b0;
+		#10
+		RESET <= 1'b0;
 	end 
 
 endmodule

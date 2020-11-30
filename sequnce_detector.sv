@@ -42,12 +42,17 @@ module sequence_detector(
     /* states */
     // 000 -> start
     // 001 -> first
-    // 010 -> success
     // 011 -> second
+    // 111 -> delay
+    // 110 -> success_delay
+    // 010 -> success
     // 100 -> null -> error, go to start
     // 101 -> null -> error, go to start
+<<<<<<< HEAD
+=======
     // 110 -> success_delay
     // 111 -> delay
+>>>>>>> main
 
     /* state switch logic */
     always @(posedge clk) begin
@@ -107,9 +112,15 @@ module sequence_detector(
         endcase
         /* combinational next-state logic */
         /*
+<<<<<<< HEAD
+        next_state[2] <= (state[1] & state[0] & ~sig_to_test) | (state[2] & ~sig_to_test) | (state[2] & state[0]);
+        next_state[1] <= (state[0] & sig_to_test) | (state[1] & state[0]) | (state[2]);
+        next_state[0] <= (~state[1] & state[0] & sig_to_test) | (state[1] & state[0] & ~sig_to_test) | (state[2] & ~state[0]);
+=======
         next_state[2] <= (~sig_to_test) | (~state[1] & state[0]) | (state[2]);
         next_state[1] <= (state[0] & sig_to_test) | (state[1] & state[0]) | (state[2]);
         next_state[0] <= (state[1] & state[0] & ~sig_to_test) | (state[2] & ~sig_to_test) | (state[2] & state[0]);
+>>>>>>> main
         */
     end
 

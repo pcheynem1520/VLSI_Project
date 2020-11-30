@@ -52,7 +52,7 @@ module sequence_detector(
         next_state[1] <= (~sig_to_test) | (~state[1] & state[0]);
     end
 
-    /* D flip-flops */
+    /* state flip-flops */
     always @(posedge clk) begin
         if (rst) begin
            state <= start;

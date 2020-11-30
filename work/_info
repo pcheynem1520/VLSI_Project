@@ -8,80 +8,130 @@ z2
 !i10e 25
 !i10f 100
 cModel Technology
-dC:/intelFPGA/20.1
-vproject_TB
-Z0 DXx6 sv_std 3 std 0 22 VYECXdT12H8WgbUP_5Y6:3
+Z0 dC:/intelFPGA/20.1
 <<<<<<< HEAD
-Z1 !s110 1606700551
-=======
-Z1 !s110 1606687671
->>>>>>> main
-!i10b 1
-!s100 F??n5=LkBQA;bS=MK8W8K0
-Z2 !s11b Dg1SIo80bB@j0V0VzS_@n1
-IQ^dU9R:W5cRhMl[KI4z5K0
-Z3 VDg1SIo80bB@j0V0VzS_@n1
-S1
-Z4 dD:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/VLSI_Project
-w1606686813
-8D:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/VLSI_Project/project_TB.sv
-FD:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/VLSI_Project/project_TB.sv
+!s110 1606700551
+Z1 =======
+!s110 1606687671
+R0
 <<<<<<< HEAD
 !i122 10
-=======
-!i122 4
->>>>>>> main
-L0 19 112
-Z5 OV;L;2020.1;71
-r1
-!s85 0
-31
-<<<<<<< HEAD
-Z6 !s108 1606700551.000000
-=======
-Z6 !s108 1606687671.000000
->>>>>>> main
-!s107 D:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/VLSI_Project/project_TB.sv|
-!s90 -reportprogress|300|-work|work|-sv|-stats=none|D:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/VLSI_Project/project_TB.sv|
-!i113 1
-Z7 o-work work -sv
-Z8 tCvgOpt 0
-nproject_@t@b
-vsequence_detector
-R0
 R1
-!i10b 1
+!i122 4
+R0
+<<<<<<< HEAD
+!s108 1606700551.000000
+R1
+Z2 !s108 1606687671.000000
+R0
 <<<<<<< HEAD
 !s100 QURD]A;j9VbG5YVQNYhVB3
-R2
+Z3 !s11b Dg1SIo80bB@j0V0VzS_@n1
 IDhd_I2=oZa7NDRI<W?f1z3
-R3
+Z4 VDg1SIo80bB@j0V0VzS_@n1
 S1
-R4
+Z5 dD:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/VLSI_Project
 w1606700541
-8D:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/VLSI_Project/sequnce_detector.sv
-FD:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/VLSI_Project/sequnce_detector.sv
+Z6 8D:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/VLSI_Project/sequnce_detector.sv
+Z7 FD:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/VLSI_Project/sequnce_detector.sv
 !i122 9
-=======
+R1
 !s100 IUT2FjoGM[9Ya?g2BgYfE2
-R2
-Ibn26j=`n1nE?>`^bIZUK?1
 R3
-S1
+Ibn26j=`n1nE?>`^bIZUK?1
 R4
+S1
+R5
 w1606687612
-8D:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/VLSI_Project/sequnce_detector.sv
-FD:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/VLSI_Project/sequnce_detector.sv
+R6
+R7
 !i122 5
 >>>>>>> main
-L0 16 160
+!i10b 1
+Z8 !s100 F??n5=LkBQA;bS=MK8W8K0
+R3
+Z9 IQ^dU9R:W5cRhMl[KI4z5K0
+R4
+S1
 R5
+w1606686813
+Z10 8D:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/VLSI_Project/project_TB.sv
+Z11 FD:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/VLSI_Project/project_TB.sv
+>>>>>>> main
+Z12 L0 19 112
+Z13 OV;L;2020.1;71
 r1
 !s85 0
 31
-R6
-!s107 D:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/VLSI_Project/sequnce_detector.sv|
-!s90 -reportprogress|300|-work|work|-sv|-stats=none|D:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/VLSI_Project/sequnce_detector.sv|
+R0
+>>>>>>> main
+!s107 D:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/VLSI_Project/project_TB.sv|
+Z14 !s90 -reportprogress|300|-work|work|-sv|-stats=none|D:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/VLSI_Project/project_TB.sv|
 !i113 1
-R7
+Z15 o-work work -sv
+Z16 tCvgOpt 0
+nproject_@t@b
+R0
+>>>>>>> main
+Z17 L0 16 160
+R13
+r1
+!s85 0
+31
+R2
+Z18 !s107 D:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/VLSI_Project/sequnce_detector.sv|
+Z19 !s90 -reportprogress|300|-work|work|-sv|-stats=none|D:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/VLSI_Project/sequnce_detector.sv|
+!i113 1
+R15
+R16
+R0
+vproject_TB
+Z20 DXx6 sv_std 3 std 0 22 VYECXdT12H8WgbUP_5Y6:3
+Z21 !s110 1606716926
+!i10b 1
 R8
+R3
+R9
+R4
+S1
+R5
+w1606709702
+R10
+R11
+!i122 14
+R12
+R13
+r1
+!s85 0
+31
+Z22 !s108 1606716926.000000
+Z23 !s107 D:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/VLSI_Project/project_TB.sv|
+R14
+!i113 1
+R15
+R16
+vsequence_detector
+R20
+R21
+!i10b 1
+!s100 E0Ab3m;5mh:fWcjzg>23W2
+R3
+IISS10NBPZiK3T0701OEE93
+R4
+S1
+R5
+w1606716918
+R6
+R7
+!i122 13
+R17
+R13
+r1
+!s85 0
+31
+R22
+R18
+R19
+!i113 1
+R15
+R16

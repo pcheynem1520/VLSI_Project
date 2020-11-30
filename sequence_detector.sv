@@ -97,7 +97,7 @@ module sequence_detector(
         */
     end
 
-    /* state switch logic */
+    /* state flip-flops */
     always @(posedge clk) begin
         if (rst) begin
            state <= start;

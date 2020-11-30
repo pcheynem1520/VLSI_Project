@@ -49,21 +49,7 @@ module sequence_detector(
     // 100 -> null -> error, go to start
     // 101 -> null -> error, go to start
 
-    /* state switch logic */
-    always @(posedge clk) begin
-        if (rst) begin
-           state <= start;
-           count_detect <= 0;
-        end
-        else begin
-           state <= next_state; 
-           if (z) begin
-               count_detect <= count_detect + 1;
-           end
-        end
-    end
-
-    /* next_state logic */
+    /* next-state logic */
     always_comb begin
         /* next-state swtich statement */
         case (state)
@@ -113,18 +99,17 @@ module sequence_detector(
         */
     end
 
-    /* flip-flop input logic */
-    always_comb begin
-        d_ff[2] <= (state[2] & state[0]) | (state[2] & sig_to_test) | (state[1] & state[0] & ~sig_to_test);
-        d_ff[1] <= (state[1] & state[0]) | (state[0] & sig_to_test) | state[2];
-        d_ff[0] <= ~sig_to_test | (~state[1] & state[0]);
-    end
-
-    /* D flip-flops */
+    /* state switch logic */
     always @(posedge clk) begin
-        q_ff[2] <= d_ff[2];
-        q_ff[1] <= d_ff[1];
-        q_ff[0] <= d_ff[0];
+        if (rst) begin
+           state <= start;
+           count_detect <= 0;
+        end else begin
+           state <= next_state; 
+           if (z) begin
+               count_detect <= count_detect + 1;
+           end
+        end
     end
 
     /* output logic */
@@ -133,13 +118,11 @@ module sequence_detector(
     end
 
     /* 7-segment display control logic */
-    always @(posedge clk) begin 
+    always_comb begin 
         if (rst) begin // reset signal goes high, set 7-segs to "00"
             disp0 = 7'b1000000;
             disp1 = 7'b1000000;
-        end
-
-        else if (ena) begin // enable signal high
+        end else if (ena) begin // enable signal high
             /* 7-segment display control codes for ones unit */
             case (count_detect % 10) // mod10 for units
 				0:		    disp0 <= 7'b1000000;
@@ -154,7 +137,6 @@ module sequence_detector(
 				9:		    disp0 <= 7'b0011000;
 				default:	disp0 <= 7'b0000111;
 			endcase
-
             /* 7-segment display control codes for tens unit */
 			case (count_detect / 10) // divide round down for tens
 				0:		    disp1 <= 7'b1000000;

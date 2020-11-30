@@ -63,12 +63,12 @@ sequence_detector uut(
 	/* runtime signals */
 	initial begin
 		/* initialisation */
-		RESET <= 1'b0; // set:0, reset:1
+		RESET <= 1'b1; // set:0, reset:1
 		ENABLE <= 1'b1; // disable counter: 0, enable counter: 1
 		SEQUENCE_FLAG <= 1'b0; // initialise detection flag at 0
 		SEQUENCE_COUNTER <= 0; // initialise counter at 0
-
 		#10 // wait 10ns/1 clock cycles
+		RESET <= 1'b0; // set:0, reset:1
 
 		/* send test signal */
 		SIGNAL_IN <= TEST_SIG[0];

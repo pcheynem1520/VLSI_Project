@@ -76,7 +76,7 @@ module sequence_detector(
 
     /* output logic */
     always_comb begin
-        z <= state[1] & ~state[0];
+        z <= (state[1] & state[0] & sig_to_test) | (state[2] & sig_to_test);
     end
 
     /* 7-segment display control logic */

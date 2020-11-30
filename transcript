@@ -32,3 +32,7 @@ add wave -position insertpoint sim:/project_TB/uut/*
 # ** Warning: (vsim-WLF-5001) Could not open WLF file: vsim.wlf
 #           Using alternate file: ./wlftmjts6m
 run 350
+# Compile of project_TB.sv was successful.
+# 1 compiles, 1 failed with no errors.
+# End time: 01:31:28 on Nov 30,2020, Elapsed time: 0:15:56
+# Errors: 0, Warnings: 4

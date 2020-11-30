@@ -87,7 +87,7 @@ R16
 R0
 vproject_TB
 Z20 DXx6 sv_std 3 std 0 22 VYECXdT12H8WgbUP_5Y6:3
-Z21 !s110 1606702427
+!s110 1606705351
 !i10b 1
 !s100 a_Ji:Dc6;zA@>ia?BT0P63
 R4
@@ -98,21 +98,21 @@ R7
 w1606702398
 R10
 R11
-!i122 12
+!i122 13
 R12
 R13
 r1
 !s85 0
 31
-Z22 !s108 1606702427.000000
-Z23 !s107 D:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/VLSI_Project/project_TB.sv|
+!s108 1606705351.000000
+Z21 !s107 D:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/VLSI_Project/project_TB.sv|
 R14
 !i113 1
 R15
 R16
 vsequence_detector
 R20
-R21
+!s110 1606702427
 !i10b 1
 R3
 R4
@@ -129,7 +129,7 @@ R13
 r1
 !s85 0
 31
-R22
+!s108 1606702427.000000
 R18
 R19
 !i113 1

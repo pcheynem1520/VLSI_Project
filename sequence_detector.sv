@@ -49,29 +49,82 @@ module sequence_detector(
     // 100 -> null -> error, go to start
     // 101 -> null -> error, go to start
 
-    /* next-state logic */
+    /* state switch logic */
+    always @(posedge clk) begin
+        if (rst) begin
+           state <= start;
+           count_detect <= 0;
+        end
+        else begin
+           state <= next_state; 
+           if (z) begin
+               count_detect <= count_detect + 1;
+           end
+        end
+    end
+
+    /* next_state logic */
     always_comb begin
-        d_ff[2] <= (state[1] & state[0] & ~sig_to_test) | (state[2] & ~sig_to_test) | (state[2] & state[0]);
-        d_ff[1] <= (state[0] & sig_to_test) | (state[1] & state[0]) | (state[2]);
-        d_ff[1] <= (~sig_to_test) | (~state[1] & state[0]);
+        /* next-state swtich statement */
+        case (state)
+            start:
+                if (sig_to_test) begin
+                    next_state = start;
+                end else begin
+                    next_state = first;
+                end
+            first:
+                if (sig_to_test) begin
+                    next_state = second;
+                end else begin
+                    next_state = first;
+                end
+            second:
+                if (sig_to_test) begin
+                    next_state = success;
+                end else begin
+                    next_state = delay;
+                end
+            delay:
+                if (sig_to_test) begin
+                    next_state = success_delay;
+                end else begin
+                    next_state = delay;
+                end
+            success_delay:
+                if (sig_to_test) begin
+                    next_state = success;
+                end else begin
+                    next_state = delay;
+                end
+            success:
+                if (sig_to_test) begin
+                    next_state = start;
+                end else begin
+                    next_state = first;
+                end
+            default: next_state = start;
+        endcase
+        /* combinational next-state logic */
+        /*
+        next_state[2] <= (state[1] & state[0] & ~sig_to_test) | (state[2] & ~sig_to_test) | (state[2] & state[0]);
+        next_state[1] <= (state[0] & sig_to_test) | (state[1] & state[0]) | (state[2]);
+        next_state[0] <= (~state[1] & state[0] & sig_to_test) | (state[1] & state[0] & ~sig_to_test) | (state[2] & ~state[0]);
+        */
+    end
+
+    /* flip-flop input logic */
+    always_comb begin
+        d_ff[2] <= (state[2] & state[0]) | (state[2] & sig_to_test) | (state[1] & state[0] & ~sig_to_test);
+        d_ff[1] <= (state[1] & state[0]) | (state[0] & sig_to_test) | state[2];
+        d_ff[0] <= ~sig_to_test | (~state[1] & state[0]);
     end
 
     /* D flip-flops */
     always @(posedge clk) begin
-        if (rst) begin
-           state[2] <= 1'b0;
-           state[1] <= 1'b0;
-           state[0] <= 1'b0;
-           count_detect <= 0;
-        end
-        else begin
-            state[2] <= next_state[2];
-            state[1] <= next_state[1];
-            state[0] <= next_state[0];
-            if (z) begin // not posedge in case of 2 consecutive detections
-               count_detect <= count_detect + 1;
-            end
-        end
+        q_ff[2] <= d_ff[2];
+        q_ff[1] <= d_ff[1];
+        q_ff[0] <= d_ff[0];
     end
 
     /* output logic */
@@ -85,6 +138,7 @@ module sequence_detector(
             disp0 = 7'b1000000;
             disp1 = 7'b1000000;
         end
+
         else if (ena) begin // enable signal high
             /* 7-segment display control codes for ones unit */
             case (count_detect % 10) // mod10 for units

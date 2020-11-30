@@ -118,13 +118,6 @@ sequence_detector uut(
 		SIGNAL_IN <= TEST_SIG[22];
 		#10
 		SIGNAL_IN <= TEST_SIG[23];
-
-		/* halt */
-		#50
-		RESET <= 1'b1;
-		ENABLE <= 1'b0;
-		#10
-		RESET <= 1'b0;
 	end 
 
 endmodule

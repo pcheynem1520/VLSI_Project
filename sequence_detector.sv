@@ -6,7 +6,7 @@
 // 
 // Searches for a series of binary inputs that satisfies
 // 01[0*]1, where 0* is any number of zeros. A 7-segment
-// display will count up the number of times 01[0*]1 is
+// display will count the number of times 01[0*]1 is
 // found in a sequence.
 // 
 // CIRCUIT DEFINITION FILE
@@ -15,7 +15,7 @@
 
 module sequence_detector(
     /* circuit control signals */
-	input   logic   clk, // main clock signal
+    input   logic   clk, // main clock signal
     input   logic   rst, // reset
     input   logic   ena, // enable
 
@@ -23,7 +23,7 @@ module sequence_detector(
     input   logic   sig_to_test, // input signal to be tested for 01[0*]1
 
     /* 7-segment display signals */
-    output  logic   [6:0] disp0, // ones digit
+    output  logic   [6:0] disp0, // one’s digit
     output  logic   [6:0] disp1, // tens digit
 
     /* output signals */
@@ -37,8 +37,8 @@ module sequence_detector(
 
     /* state register */
     typedef enum logic [2:0]
-	{start, first, success, second, unused_0, unused_1, success_delay, delay} statetype;
-	statetype state, next_state;
+    {start, first, success, second, unused_0, unused_1, success_delay, delay} statetype;
+    statetype state, next_state;
     /* states */
     // 000 -> start
     // 001 -> first
@@ -51,7 +51,7 @@ module sequence_detector(
 
     /* next-state logic */
     always_comb begin
-        /* next-state swtich statement */
+        /* next-state switch statement */
         case (state)
             start:
                 if (sig_to_test) begin
@@ -123,35 +123,35 @@ module sequence_detector(
             disp0 = 7'b1000000;
             disp1 = 7'b1000000;
         end else if (ena) begin // enable signal high
-            /* 7-segment display control codes for ones unit */
+            /* 7-segment display control codes for one’s unit */
             case (count_detect % 10) // mod10 for units
-				0:		    disp0 <= 7'b1000000;
-				1:		    disp0 <= 7'b1111001;
-				2:		    disp0 <= 7'b0100100;
-				3:		    disp0 <= 7'b0110000;
-				4:		    disp0 <= 7'b0011001;
-				5:		    disp0 <= 7'b0010010;
-				6:		    disp0 <= 7'b0000010;
-				7:		    disp0 <= 7'b1111000;
-				8:		    disp0 <= 7'b0000000;
-				9:		    disp0 <= 7'b0011000;
-				default:	disp0 <= 7'b0000111;
-			endcase
+                0:          disp0 <= 7'b1000000;
+                1:          disp0 <= 7'b1111001;
+                2:          disp0 <= 7'b0100100;
+                3:          disp0 <= 7'b0110000;
+                4:          disp0 <= 7'b0011001;
+                5:          disp0 <= 7'b0010010;
+                6:          disp0 <= 7'b0000010;
+                7:          disp0 <= 7'b1111000;
+                8:          disp0 <= 7'b0000000;
+                9:          disp0 <= 7'b0011000;
+                default:    disp0 <= 7'b0000111;
+            endcase
             /* 7-segment display control codes for tens unit */
-			case (count_detect / 10) // divide round down for tens
-				0:		    disp1 <= 7'b1000000;
-				1:		    disp1 <= 7'b1111001;
-				2:		    disp1 <= 7'b0100100;
-				3:		    disp1 <= 7'b0110000;
-				4:		    disp1 <= 7'b0011001;
-				5:		    disp1 <= 7'b0010010;
-				6:		    disp1 <= 7'b0000010;
-				7:		    disp1 <= 7'b1111000;
-				8:		    disp1 <= 7'b0000000;
-				9:		    disp1 <= 7'b0011000;
-				default:	disp1 <= 7'b0000111;
-			endcase
+            case (count_detect / 10) // divide round down for tens
+                0:          disp1 <= 7'b1000000;
+                1:          disp1 <= 7'b1111001;
+                2:          disp1 <= 7'b0100100;
+                3:          disp1 <= 7'b0110000;
+                4:          disp1 <= 7'b0011001;
+                5:          disp1 <= 7'b0010010;
+                6:          disp1 <= 7'b0000010;
+                7:          disp1 <= 7'b1111000;
+                8:          disp1 <= 7'b0000000;
+                9:          disp1 <= 7'b0011000;
+                default:    disp1 <= 7'b0000111;
+            endcase
         end
     end
 
-endmodule
+endmodule 

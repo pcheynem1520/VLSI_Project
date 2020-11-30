@@ -31,8 +31,6 @@ module sequence_detector(
 );
 
     /* variable assignments */
-    logic   [2:0] d_ff; // d flip-flop inputs
-    logic   [2:0] q_ff; // d flip-flop outputs
     integer count_detect = 0; // counter of times sequence was detected
 
     /* state register */
@@ -95,7 +93,7 @@ module sequence_detector(
         /*
         next_state[2] <= (state[1] & state[0] & ~sig_to_test) | (state[2] & ~sig_to_test) | (state[2] & state[0]);
         next_state[1] <= (state[0] & sig_to_test) | (state[1] & state[0]) | (state[2]);
-        next_state[0] <= (~state[1] & state[0] & sig_to_test) | (state[1] & state[0] & ~sig_to_test) | (state[2] & ~state[0]);
+        next_state[0] <= (~sig_to_test) | (~state[1] & state[0])
         */
     end
 
@@ -104,7 +102,7 @@ module sequence_detector(
         if (rst) begin
            state <= start;
            count_detect <= 0;
-        end else begin
+        end else if (ena) begin
            state <= next_state; 
            if (z) begin
                count_detect <= count_detect + 1;
@@ -114,7 +112,7 @@ module sequence_detector(
 
     /* output logic */
     always_comb begin
-        z <= (state[1] & state[0] & sig_to_test) | (state[2] & sig_to_test);
+        z <= (state[2] & sig_to_test) | (state[1] & state[0] & sig_to_test);
     end
 
     /* 7-segment display control logic */

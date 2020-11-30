@@ -56,7 +56,7 @@ module sequence_detector(
            count_detect <= 0;
         end
         else begin
-           state <= next_state; 
+           state <= q_ff; 
            if (z) begin
                count_detect <= count_detect + 1;
            end
@@ -105,15 +105,9 @@ module sequence_detector(
                 end
             default: next_state = start;
         endcase
-        /* combinational next-state logic */
-        /*
-        next_state[2] <= (state[1] & state[0] & ~sig_to_test) | (state[2] & ~sig_to_test) | (state[2] & state[0]);
-        next_state[1] <= (state[0] & sig_to_test) | (state[1] & state[0]) | (state[2]);
-        next_state[0] <= (~state[1] & state[0] & sig_to_test) | (state[1] & state[0] & ~sig_to_test) | (state[2] & ~state[0]);
-        */
     end
 
-    /* flip-flop input logic */
+    /* combinational next-state logic */
     always_comb begin
         d_ff[2] <= (state[2] & state[0]) | (state[2] & sig_to_test) | (state[1] & state[0] & ~sig_to_test);
         d_ff[1] <= (state[1] & state[0]) | (state[0] & sig_to_test) | state[2];

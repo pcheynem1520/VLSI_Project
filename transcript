@@ -1,24 +1,36 @@
-# Compile of project_TB.sv was successful.
 # Compile of sequnce_detector.sv was successful.
-# 2 compiles, 0 failed with no errors.
+# Errors: 0, Warnings: 0
+# Compile of sequnce_detector.sv was successful.
+# Errors: 0, Warnings: 0
+# Compile of project_TB.sv was successful.
 vsim -gui work.project_TB work.sequence_detector
 # vsim -gui work.project_TB work.sequence_detector 
-# Start time: 17:05:41 on Nov 29,2020
+# Start time: 20:41:00 on Nov 29,2020
 # Loading sv_std.std
 # Loading work.project_TB
 # Loading work.sequence_detector
 add wave -position insertpoint sim:/project_TB/uut/*
+# ** Warning: (vsim-WLF-5000) WLF file currently in use: vsim.wlf
+#           File in use by: pchey  Hostname: APOLLO  ProcessID: 13132
+#           Attempting to use alternate WLF file "./wlftca67vc".
+# ** Warning: (vsim-WLF-5001) Could not open WLF file: vsim.wlf
+#           Using alternate file: ./wlftca67vc
 run 350
-# Compile of project_TB.sv was successful.
 # Compile of sequnce_detector.sv was successful.
+# Compile of project_TB.sv was successful.
 # 2 compiles, 0 failed with no errors.
 vsim -gui work.project_TB work.sequence_detector
-# End time: 17:07:56 on Nov 29,2020, Elapsed time: 0:02:15
-# Errors: 0, Warnings: 3
+# End time: 20:42:50 on Nov 29,2020, Elapsed time: 0:01:50
+# Errors: 0, Warnings: 6
 # vsim -gui work.project_TB work.sequence_detector 
-# Start time: 17:07:56 on Nov 29,2020
+# Start time: 20:42:50 on Nov 29,2020
 # Loading sv_std.std
 # Loading work.project_TB
 # Loading work.sequence_detector
 add wave -position insertpoint sim:/project_TB/uut/*
+# ** Warning: (vsim-WLF-5000) WLF file currently in use: vsim.wlf
+#           File in use by: pchey  Hostname: APOLLO  ProcessID: 13132
+#           Attempting to use alternate WLF file "./wlft43gj4f".
+# ** Warning: (vsim-WLF-5001) Could not open WLF file: vsim.wlf
+#           Using alternate file: ./wlft43gj4f
 run 350

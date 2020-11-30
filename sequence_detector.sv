@@ -52,20 +52,21 @@ module sequence_detector(
     /* state switch logic */
     always @(posedge clk) begin
         if (rst) begin
-           state <= start;
+           state <= 3'b000;
            count_detect <= 0;
         end
         else begin
-           state <= q_ff; 
-           if (z) begin
+           state <= next_state; 
+           if (z) begin // not posedge in case of 2 consecutive detections
                count_detect <= count_detect + 1;
            end
         end
     end
 
     /* next_state logic */
-    always_comb begin
+    //always_comb begin
         /* next-state swtich statement */
+        /*
         case (state)
             start:
                 if (sig_to_test) begin
@@ -105,25 +106,26 @@ module sequence_detector(
                 end
             default: next_state = start;
         endcase
-    end
+        */
+//    end
 
     /* combinational next-state logic */
     always_comb begin
-        d_ff[2] <= (state[2] & state[0]) | (state[2] & sig_to_test) | (state[1] & state[0] & ~sig_to_test);
-        d_ff[1] <= (state[1] & state[0]) | (state[0] & sig_to_test) | state[2];
-        d_ff[0] <= ~sig_to_test | (~state[1] & state[0]);
+        next_state[2] <= (state[1] & state[0] & ~sig_to_test) | (state[2] & ~sig_to_test) | (state[2] & state[0]);
+        next_state[1] <= (state[0] & sig_to_test) | (state[1] & state[0]) | (state[2]);
+        next_state[1] <= (~sig_to_test) | (~state[1] & state[0]);
     end
 
     /* D flip-flops */
     always @(posedge clk) begin
-        q_ff[2] <= d_ff[2];
-        q_ff[1] <= d_ff[1];
-        q_ff[0] <= d_ff[0];
+        state[2] <= next_state[2];
+        state[1] <= next_state[1];
+        state[0] <= next_state[0];
     end
 
     /* output logic */
     always_comb begin
-        z <= q_ff[1] & ~q_ff[0];
+        z <= next_state[1] & ~next_state[0];
     end
 
     /* 7-segment display control logic */

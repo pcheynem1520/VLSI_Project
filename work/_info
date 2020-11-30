@@ -11,7 +11,7 @@ cModel Technology
 dC:/intelFPGA/20.1
 vproject_TB
 Z0 DXx6 sv_std 3 std 0 22 VYECXdT12H8WgbUP_5Y6:3
-Z1 !s110 1606687671
+Z1 !s110 1606700551
 !i10b 1
 !s100 F??n5=LkBQA;bS=MK8W8K0
 Z2 !s11b Dg1SIo80bB@j0V0VzS_@n1
@@ -22,13 +22,13 @@ Z4 dD:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/
 w1606686813
 8D:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/VLSI_Project/project_TB.sv
 FD:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/VLSI_Project/project_TB.sv
-!i122 4
+!i122 10
 L0 19 112
 Z5 OV;L;2020.1;71
 r1
 !s85 0
 31
-Z6 !s108 1606687671.000000
+Z6 !s108 1606700551.000000
 !s107 D:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/VLSI_Project/project_TB.sv|
 !s90 -reportprogress|300|-work|work|-sv|-stats=none|D:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/VLSI_Project/project_TB.sv|
 !i113 1
@@ -39,16 +39,16 @@ vsequence_detector
 R0
 R1
 !i10b 1
-!s100 IUT2FjoGM[9Ya?g2BgYfE2
+!s100 QURD]A;j9VbG5YVQNYhVB3
 R2
-Ibn26j=`n1nE?>`^bIZUK?1
+IDhd_I2=oZa7NDRI<W?f1z3
 R3
 S1
 R4
-w1606687612
+w1606700541
 8D:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/VLSI_Project/sequnce_detector.sv
 FD:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/VLSI_Project/sequnce_detector.sv
-!i122 5
+!i122 9
 L0 16 160
 R5
 r1

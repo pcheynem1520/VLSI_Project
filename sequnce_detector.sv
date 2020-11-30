@@ -107,9 +107,9 @@ module sequence_detector(
         endcase
         /* combinational next-state logic */
         /*
-        next_state[2] <= (~sig_to_test) | (~state[1] & state[0]) | (state[2]);
+        next_state[2] <= (state[1] & state[0] & ~sig_to_test) | (state[2] & ~sig_to_test) | (state[2] & state[0]);
         next_state[1] <= (state[0] & sig_to_test) | (state[1] & state[0]) | (state[2]);
-        next_state[0] <= (state[1] & state[0] & ~sig_to_test) | (state[2] & ~sig_to_test) | (state[2] & state[0]);
+        next_state[0] <= (~state[1] & state[0] & sig_to_test) | (state[1] & state[0] & ~sig_to_test) | (state[2] & ~state[0]);
         */
     end
 

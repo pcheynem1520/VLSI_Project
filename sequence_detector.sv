@@ -31,43 +31,34 @@ module sequence_detector(
 );
 
     /* variable assignments */
-    logic   [2:0] d_ff; // d flip-flop inputs
-    logic   [2:0] q_ff; // d flip-flop outputs
     integer count_detect = 0; // counter of times sequence was detected
 
     /* state register */
-    typedef enum logic [2:0]
-	{start, first, success, second, unused_0, unused_1, success_delay, delay} statetype;
-	statetype state, next_state;
+    logic   [2:0] next_state; // d flip-flop inputs
+    logic   [2:0] state; // d flip-flop outputs
+
     /* states */
-    // 000 -> start
-    // 001 -> first
-    // 011 -> second
-    // 111 -> delay
-    // 110 -> success_delay
-    // 010 -> success
-    // 100 -> null -> error, go to start
-    // 101 -> null -> error, go to start
+    logic   start = 3'b000;
+    logic   first = 3'b001;
+    logic   second = 3'b011;
+    logic   delay = 3'b111;
+    logic   success_delay = 3'b110;
+    logic   success = 3'b010;
 
     /* next-state logic */
     always_comb begin
-        d_ff[2] <= (state[1] & state[0] & ~sig_to_test) | (state[2] & ~sig_to_test) | (state[2] & state[0]);
-        d_ff[1] <= (state[0] & sig_to_test) | (state[1] & state[0]) | (state[2]);
-        d_ff[1] <= (~sig_to_test) | (~state[1] & state[0]);
+        next_state[2] <= (state[1] & state[0] & ~sig_to_test) | (state[2] & ~sig_to_test) | (state[2] & state[0]);
+        next_state[1] <= (state[0] & sig_to_test) | (state[1] & state[0]) | (state[2]);
+        next_state[1] <= (~sig_to_test) | (~state[1] & state[0]);
     end
 
     /* D flip-flops */
     always @(posedge clk) begin
         if (rst) begin
-           state[2] <= 1'b0;
-           state[1] <= 1'b0;
-           state[0] <= 1'b0;
+           state <= start;
            count_detect <= 0;
-        end
-        else begin
-            state[2] <= next_state[2];
-            state[1] <= next_state[1];
-            state[0] <= next_state[0];
+        end else if (ena) begin
+            state <= next_state;
             if (z) begin // not posedge in case of 2 consecutive detections
                count_detect <= count_detect + 1;
             end
@@ -76,7 +67,7 @@ module sequence_detector(
 
     /* output logic */
     always_comb begin
-        z <= (state[1] & state[0] & sig_to_test) | (state[2] & sig_to_test);
+        z <= (state[2] & sig_to_test) | (state[1] & state[0] & sig_to_test);
     end
 
     /* 7-segment display control logic */

@@ -17,16 +17,22 @@
 
 /* testbench signals */
 module project_TB;
+    /* circuit control signals */
     logic   CLOCK; // clock signal
-    logic   RESET; // reset signal
-    logic   ENABLE; // enable signal
+    logic   RESET; // reset 
+    logic   ENABLE; // enable 
 
-    logic   SIGNAL_IN; // input signal
-    
-    logic   [6:0] DISP0; // ones of loaded number
-    logic   [6:0] DISP1; // tens of loaded number
+    /* input signals */
+    logic   SIGNAL_IN; // input signal to be tested for 01[0*]1
 
+    /* 7-segment display signals */
+    logic   [6:0] DISP0; // ones digit of loaded number
+    logic   [6:0] DISP1; // tens digit of loaded number
+
+    /* ouput signals */
     logic   SEQUENCE_FLAG; // flag triggered when sequence is detected
+
+    /* variables */
     logic   SEQUENCE_COUNTER; // number of times sequence is found between resets
 
 sequence_detector uut(
@@ -42,11 +48,6 @@ sequence_detector uut(
     .z (SEQUENCE_FLAG)
 );
 
-    /* state names and numbers*/
-    typedef enum logic [2:0]
-    {start, first, success, second, unused_0, unused_1, success_delay, delay} statetype;
-    statetype state, next_state;
-
     /* test signal */
     logic   [0:23] TEST_SIG = 24'b000100110001011101010011; // LSB -> MSB for readability of passing signal
 
@@ -57,7 +58,7 @@ sequence_detector uut(
 
     /* start clock signal */
     always begin
-            #5 CLOCK = ~CLOCK; // 100MHz, posedge -> posedge
+            #5 CLOCK = ~CLOCK; // 100MHz,  10ns for posedge -> posedge
     end
  
     /* runtime signals */
@@ -65,8 +66,6 @@ sequence_detector uut(
         /* initialisation */
         RESET <= 1'b1; // set:0, reset:1
         ENABLE <= 1'b1; // disable counter: 0, enable counter: 1
-        SEQUENCE_FLAG <= 1'b0; // initialise detection flag at 0
-        SEQUENCE_COUNTER <= 0; // initialise counter at 0
         #10 // wait 10ns/1 clock cycles
         RESET <= 1'b0; // set:0, reset:1
 
@@ -118,6 +117,12 @@ sequence_detector uut(
         SIGNAL_IN <= TEST_SIG[22];
         #10
         SIGNAL_IN <= TEST_SIG[23];
+        #10
+
+        /* halt */
+        #20 // ensure that all singals are in final position
+        RESET <= 1'b1; // set:0, reset:1
+        ENABLE <= 1'b0; // disable counter: 0, enable counter: 1
     end 
 
 endmodule 

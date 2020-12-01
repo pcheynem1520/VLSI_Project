@@ -45,15 +45,8 @@ module sequence_detector(
     logic   success_delay = 3'b110;
     logic   success = 3'b010;
 
-    /* next-state logic */
-    always_comb begin
-        next_state[2] <= (state[1] & state[0] & ~sig_to_test) | (state[2] & ~sig_to_test) | (state[2] & state[0]);
-        next_state[1] <= (state[0] & sig_to_test) | (state[1] & state[0]) | (state[2]);
-        next_state[1] <= (~sig_to_test) | (~state[1] & state[0]);
-    end
-
-    /* state flip-flops */
-    always @(posedge clk) begin
+    /* state register */
+    always_ff begin
         if (rst) begin
            state <= start;
            count_detect <= 0;
@@ -65,10 +58,15 @@ module sequence_detector(
         end
     end
 
-    /* output logic */
+    /* next-state logic */
     always_comb begin
-        z <= (state[2] & sig_to_test) | (state[1] & state[0] & sig_to_test);
+        next_state[2] <= (state[1] & state[0] & ~sig_to_test) | (state[2] & ~sig_to_test) | (state[2] & state[0]);
+        next_state[1] <= (state[0] & sig_to_test) | (state[1] & state[0]) | (state[2]);
+        next_state[1] <= (~sig_to_test) | (~state[1] & state[0]);
     end
+
+    /* output logic */
+    assign z <= (state[2] & sig_to_test) | (state[1] & state[0] & sig_to_test);
 
     /* 7-segment display control logic */
     always @(posedge clk) begin 
@@ -91,7 +89,6 @@ module sequence_detector(
 				9:		    disp0 <= 7'b0011000;
 				default:	disp0 <= 7'b0000111;
 			endcase
-
             /* 7-segment display control codes for tens unit */
 			case (count_detect / 10) // divide round down for tens
 				0:		    disp1 <= 7'b1000000;

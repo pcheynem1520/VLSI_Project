@@ -23,7 +23,7 @@ module project_TB;
     logic   ENABLE; // enable 
 
     /* input signals */
-    logic   SIGNAL_PI; // input signal to be tested for 01[0*]1
+    logic   SIGNAL_IN; // input signal to be tested for 01[0*]1
 
     /* 7-segment display signals */
     logic   [6:0] DISP0; // ones digit of loaded number
@@ -41,7 +41,7 @@ module project_TB;
         .rst (RESET), 
         .ena (ENABLE), 
 
-        .sig_to_test (SIGNAL_PIN), 
+        .sig_to_test (SIGNAL_IN), 
 
         .disp0 (DISP0), 
         .disp1 (DISP1), 
@@ -74,9 +74,9 @@ module project_TB;
         RESET <= 1'b0; // set:0, reset:1
 
         /* send test signal */
-        foreach (TEST_SIG[int i]) begin
-            SIGNAL_PIN = TEST_SIG[i];
-            #10;
+        for (int i = 0; i < sig_length; i++) begin
+           SIGNAL_IN = TEST_SIG[i];
+            #10; 
         end
 
         /* halt */

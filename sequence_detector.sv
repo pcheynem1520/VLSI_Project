@@ -48,7 +48,7 @@ module sequence_detector(
     statetype state, next_state;
 
     /* next-state register */
-    always_ff begin
+    always_ff @(posedge clk) begin
         if (rst) begin
            state <= start;
            count_detect <= 0;

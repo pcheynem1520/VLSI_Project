@@ -35,18 +35,19 @@ module project_TB;
     /* variables */
     logic   SEQUENCE_COUNTER; // number of times sequence is found between resets
 
-sequence_detector uut(
-    .clk (CLOCK), 
-    .rst (RESET), 
-    .ena (ENABLE), 
+    /* instantiation of uut */
+    sequence_detector uut(
+        .clk (CLOCK), 
+        .rst (RESET), 
+        .ena (ENABLE), 
 
-    .sig_to_test (SIGNAL_IN), 
+        .sig_to_test (SIGNAL_IN), 
 
-    .disp0 (DISP0), 
-    .disp1 (DISP1), 
+        .disp0 (DISP0), 
+        .disp1 (DISP1), 
 
-    .z (SEQUENCE_FLAG)
-);
+        .z (SEQUENCE_FLAG)
+    );
 
     /* test signal */
     logic   [0:23] TEST_SIG = 24'b000100110001011101010011; // LSB -> MSB for readability of passing signal
@@ -70,54 +71,30 @@ sequence_detector uut(
         RESET <= 1'b0; // set:0, reset:1
 
         /* send test signal */
-        SIGNAL_IN <= TEST_SIG[0];
-        #10
-        SIGNAL_IN <= TEST_SIG[1];
-        #10
-        SIGNAL_IN <= TEST_SIG[2];
-        #10
-        SIGNAL_IN <= TEST_SIG[3];
-        #10
-        SIGNAL_IN <= TEST_SIG[4];
-        #10
-        SIGNAL_IN <= TEST_SIG[5];
-        #10
-        SIGNAL_IN <= TEST_SIG[6];
-        #10
-        SIGNAL_IN <= TEST_SIG[7];
-        #10
-        SIGNAL_IN <= TEST_SIG[8];
-        #10
-        SIGNAL_IN <= TEST_SIG[9];
-        #10
-        SIGNAL_IN <= TEST_SIG[10];
-        #10
-        SIGNAL_IN <= TEST_SIG[11];
-        #10
-        SIGNAL_IN <= TEST_SIG[12];
-        #10
-        SIGNAL_IN <= TEST_SIG[13];
-        #10
-        SIGNAL_IN <= TEST_SIG[14];
-        #10
-        SIGNAL_IN <= TEST_SIG[15];
-        #10
-        SIGNAL_IN <= TEST_SIG[16];
-        #10
-        SIGNAL_IN <= TEST_SIG[17];
-        #10
-        SIGNAL_IN <= TEST_SIG[18];
-        #10
-        SIGNAL_IN <= TEST_SIG[19];
-        #10
-        SIGNAL_IN <= TEST_SIG[20];
-        #10
-        SIGNAL_IN <= TEST_SIG[21];
-        #10
-        SIGNAL_IN <= TEST_SIG[22];
-        #10
-        SIGNAL_IN <= TEST_SIG[23];
-        #10
+        SIGNAL_IN <= TEST_SIG[0];   #10
+        SIGNAL_IN <= TEST_SIG[1];   #10
+        SIGNAL_IN <= TEST_SIG[2];   #10
+        SIGNAL_IN <= TEST_SIG[3];   #10
+        SIGNAL_IN <= TEST_SIG[4];   #10
+        SIGNAL_IN <= TEST_SIG[5];   #10
+        SIGNAL_IN <= TEST_SIG[6];   #10
+        SIGNAL_IN <= TEST_SIG[7];   #10
+        SIGNAL_IN <= TEST_SIG[8];   #10
+        SIGNAL_IN <= TEST_SIG[9];   #10
+        SIGNAL_IN <= TEST_SIG[10];  #10
+        SIGNAL_IN <= TEST_SIG[11];  #10
+        SIGNAL_IN <= TEST_SIG[12];  #10
+        SIGNAL_IN <= TEST_SIG[13];  #10
+        SIGNAL_IN <= TEST_SIG[14];  #10
+        SIGNAL_IN <= TEST_SIG[15];  #10
+        SIGNAL_IN <= TEST_SIG[16];  #10
+        SIGNAL_IN <= TEST_SIG[17];  #10
+        SIGNAL_IN <= TEST_SIG[18];  #10
+        SIGNAL_IN <= TEST_SIG[19];  #10
+        SIGNAL_IN <= TEST_SIG[20];  #10
+        SIGNAL_IN <= TEST_SIG[21];  #10
+        SIGNAL_IN <= TEST_SIG[22];  #10
+        SIGNAL_IN <= TEST_SIG[23];  #10
 
         /* halt */
         #20 // ensure that all singals are in final position

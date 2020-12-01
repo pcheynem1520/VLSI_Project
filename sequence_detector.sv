@@ -45,26 +45,40 @@ module sequence_detector(
         // 101 -> null -> error, go to start
     typedef enum logic [2:0]
     {start, first, success, second, unused_0, unused_1, success_delay, delay} statetype;
-    statetype state, next_state;
+    statetype state_ENUM, next_state_ENUM;
+    // no idea why second array fixes combinational logic
+    logic [2:0] state, next_state;
 
     /* next-state register */
     always_ff @(posedge clk) begin
         if (rst) begin
            state <= start;
-           count_detect <= 0;
         end else if (ena) begin
             state <= next_state;
-            if (z) begin // not posedge in case of 2 consecutive detections
-               count_detect <= count_detect + 1;
+        end
+    end
+
+    /* detection count */
+    always @(posedge clk) begin // not posedge in case of 2 consecutive detections
+        if (rst) begin
+            count_detect <= 0;
+        end else if (ena) begin
+            if (z) begin
+                count_detect <= count_detect + 1;
             end
         end
     end
 
     /* next-state logic */
     always_comb begin
-        next_state[2] <= (state[1] & state[0] & ~sig_to_test) | (state[2] & ~sig_to_test) | (state[2] & state[0]);
-        next_state[1] <= (state[0] & sig_to_test) | (state[1] & state[0]) | (state[2]);
-        next_state[1] <= (~sig_to_test) | (~state[1] & state[0]);
+        next_state[2] = (state[1] & state[0] & ~sig_to_test) | (state[2] & ~sig_to_test) | (state[2] & state[0]);
+        next_state[1] = (state[0] & sig_to_test) | (state[1] & state[0]) | (state[2]);
+        next_state[0] = (~sig_to_test) | (~state[1] & state[0]);
+
+        /* absolutely no idea what this does or why this fixes it */
+        /* copied almost exactly out of FSM_Mano example posted the DAY THE CODE WAS DUE!!!!!! */
+        state_ENUM = statetype'(state);
+        next_state_ENUM = statetype'(next_state);
     end
 
     /* output logic */

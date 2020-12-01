@@ -68,7 +68,7 @@ module sequence_detector(
     end
 
     /* output logic */
-    assign z <= (state[2] & sig_to_test) | (state[1] & state[0] & sig_to_test);
+    assign z = (state[2] & sig_to_test) | (state[1] & state[0] & sig_to_test);
 
     /* 7-segment display control logic */
     always @(posedge clk) begin 

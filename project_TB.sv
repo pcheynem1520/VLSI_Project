@@ -53,14 +53,14 @@ module project_TB;
 
     /* initialization */
     initial begin
-        CLOCK = 1'b1; // start clock signal high
+        CLOCK <= 1'b1; // start clock signal high
         TEST_SIG = new [SIG_LENGTH]; // instantiate TEST_SIG
         TEST_SIG = { 0,0,0,1,0,0,1,1,0,0,0,1,0,1,1,1,0,1,0,1,0,0,1,1 }; // binary signal to test: 000100110001011101010011
     end
 
     /* start clock signal */
     always begin
-            #5 CLOCK = ~CLOCK; // 100MHz, posedge -> posedge
+            #5 CLOCK <= ~CLOCK; // 100MHz, posedge -> posedge
     end
  
     /* runtime signals */
@@ -68,14 +68,19 @@ module project_TB;
         /* setup */
         RESET <= 1'b1; // set:0, reset:1
         ENABLE <= 1'b1; // disable counter: 0, enable counter: 1
-        #10 // wait 10ns/1 clock cycles
+        #10; // wait 10ns/1 clock cycles
         RESET <= 1'b0; // set:0, reset:1
 
         /* send test signal */
         for (int i = 0; i < SIG_LENGTH; i++) begin
-            SIGNAL_IN = TEST_SIG[i];
+            SIGNAL_IN <= TEST_SIG[i];
             #10;
         end
+
+        /* halt */
+        #20 // ensure that all singals are in final position
+        RESET <= 1'b1; // set:0, reset:1
+        ENABLE <= 1'b0; // disable counter: 0, enable counter: 1
     end 
 
 endmodule 

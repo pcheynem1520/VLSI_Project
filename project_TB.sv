@@ -83,6 +83,6 @@ module project_TB;
         #20 // ensure that all singals are in final position
         RESET <= 1'b1; // set:0, reset:1
         ENABLE <= 1'b0; // disable counter: 0, enable counter: 1
-    end 
+    end
 
 endmodule 

@@ -34,18 +34,20 @@ module sequence_detector(
     integer count_detect = 0; // counter of times sequence was detected
 
     /* state register */
-    logic   [2:0] next_state; // d flip-flop inputs
-    logic   [2:0] state; // d flip-flop outputs
+        /* states */
+        // 000 -> start
+        // 001 -> first
+        // 011 -> second
+        // 111 -> delay
+        // 110 -> success_delay
+        // 010 -> success
+        // 100 -> null -> error, go to start
+        // 101 -> null -> error, go to start
+    typedef enum logic [2:0]
+    {start, first, success, second, unused_0, unused_1, success_delay, delay} statetype;
+    statetype state, next_state;
 
-    /* states */
-    logic   start = 3'b000;
-    logic   first = 3'b001;
-    logic   second = 3'b011;
-    logic   delay = 3'b111;
-    logic   success_delay = 3'b110;
-    logic   success = 3'b010;
-
-    /* state register */
+    /* next-state register */
     always_ff begin
         if (rst) begin
            state <= start;

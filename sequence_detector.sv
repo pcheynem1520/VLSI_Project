@@ -34,86 +34,55 @@ module sequence_detector(
     integer count_detect = 0; // counter of times sequence was detected
 
     /* state register */
+        /* states */
+        // 000 -> start
+        // 001 -> first
+        // 011 -> second
+        // 111 -> delay
+        // 110 -> success_delay
+        // 010 -> success
+        // 100 -> null -> error, go to start
+        // 101 -> null -> error, go to start
     typedef enum logic [2:0]
     {start, first, success, second, unused_0, unused_1, success_delay, delay} statetype;
-    statetype state, next_state;
-    /* states */
-    // 000 -> start
-    // 001 -> first
-    // 011 -> second
-    // 111 -> delay
-    // 110 -> success_delay
-    // 010 -> success
-    // 100 -> null -> error, go to start
-    // 101 -> null -> error, go to start
+    statetype state_ENUM, next_state_ENUM;
+    // no idea why second array fixes combinational logic
+    logic [2:0] state, next_state;
 
-    /* next-state logic */
-    always_comb begin
-        /* next-state switch statement */
-        case (state)
-            start:
-                if (sig_to_test) begin
-                    next_state = start;
-                end else begin
-                    next_state = first;
-                end
-            first:
-                if (sig_to_test) begin
-                    next_state = second;
-                end else begin
-                    next_state = first;
-                end
-            second:
-                if (sig_to_test) begin
-                    next_state = success;
-                end else begin
-                    next_state = delay;
-                end
-            delay:
-                if (sig_to_test) begin
-                    next_state = success_delay;
-                end else begin
-                    next_state = delay;
-                end
-            success_delay:
-                if (sig_to_test) begin
-                    next_state = success;
-                end else begin
-                    next_state = delay;
-                end
-            success:
-                if (sig_to_test) begin
-                    next_state = start;
-                end else begin
-                    next_state = first;
-                end
-            default: next_state = start;
-        endcase
-        /* combinational next-state logic */
-        /*
-        next_state[2] <= (state[1] & state[0] & ~sig_to_test) | (state[2] & ~sig_to_test) | (state[2] & state[0]);
-        next_state[1] <= (state[0] & sig_to_test) | (state[1] & state[0]) | (state[2]);
-        next_state[0] <= (~sig_to_test) | (~state[1] & state[0])
-        */
-    end
-
-    /* state flip-flops */
-    always @(posedge clk) begin
+    /* next-state register */
+    always_ff @(posedge clk) begin
         if (rst) begin
            state <= start;
-           count_detect <= 0;
         end else if (ena) begin
-           state <= next_state; 
-           if (z) begin
-               count_detect <= count_detect + 1;
-           end
+            state <= next_state;
         end
     end
 
-    /* output logic */
-    always_comb begin
-        z <= (state[2] & sig_to_test) | (state[1] & state[0] & sig_to_test);
+    /* detection count */
+    always @(posedge clk) begin // not posedge in case of 2 consecutive detections
+        if (rst) begin
+            count_detect <= 0;
+        end else if (ena) begin
+            if (z) begin
+                count_detect <= count_detect + 1;
+            end
+        end
     end
+
+    /* next-state logic */
+    always_comb begin
+        next_state[2] = (state[1] & state[0] & ~sig_to_test) | (state[2] & ~sig_to_test) | (state[2] & state[0]);
+        next_state[1] = (state[0] & sig_to_test) | (state[1] & state[0]) | (state[2]);
+        next_state[0] = (~sig_to_test) | (~state[1] & state[0]);
+
+        /* absolutely no idea what this does or why this fixes it */
+        /* copied almost exactly out of FSM_Mano example posted the DAY THE CODE WAS DUE!!!!!! */
+        state_ENUM = statetype'(state);
+        next_state_ENUM = statetype'(next_state);
+    end
+
+    /* output logic */
+    assign z = (state[2] & sig_to_test) | (state[1] & state[0] & sig_to_test);
 
     /* 7-segment display control logic */
     always_comb begin 
@@ -123,18 +92,18 @@ module sequence_detector(
         end else if (ena) begin // enable signal high
             /* 7-segment display control codes for one’s unit */
             case (count_detect % 10) // mod10 for units
-                0:          disp0 <= 7'b1000000;
-                1:          disp0 <= 7'b1111001;
-                2:          disp0 <= 7'b0100100;
-                3:          disp0 <= 7'b0110000;
-                4:          disp0 <= 7'b0011001;
-                5:          disp0 <= 7'b0010010;
-                6:          disp0 <= 7'b0000010;
-                7:          disp0 <= 7'b1111000;
-                8:          disp0 <= 7'b0000000;
-                9:          disp0 <= 7'b0011000;
-                default:    disp0 <= 7'b0000111;
-            endcase
+				0:		    disp0 <= 7'b1000000;
+				1:		    disp0 <= 7'b1111001;
+				2:		    disp0 <= 7'b0100100;
+				3:		    disp0 <= 7'b0110000;
+				4:		    disp0 <= 7'b0011001;
+				5:		    disp0 <= 7'b0010010;
+				6:		    disp0 <= 7'b0000010;
+				7:		    disp0 <= 7'b1111000;
+				8:		    disp0 <= 7'b0000000;
+				9:		    disp0 <= 7'b0011000;
+				default:	disp0 <= 7'b0000111;
+			endcase
             /* 7-segment display control codes for tens unit */
             case (count_detect / 10) // divide round down for tens
                 0:          disp1 <= 7'b1000000;

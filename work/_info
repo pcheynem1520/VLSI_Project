@@ -48,9 +48,15 @@ R3
 w1606847841
 8D:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/VLSI_Project/sequence_detector.sv
 FD:/University/2020-2021/Semester 1/Digital VLSI Circuit Design/Labs/Project/VLSI_Project/sequence_detector.sv
+<<<<<<< HEAD
 !i122 9
 L0 16 109
 R4
+=======
+!i122 26
+L0 16 108
+R5
+>>>>>>> 811cd8d7c9fdc50d5ebf3e73835fd4477686dc88
 r1
 !s85 0
 31

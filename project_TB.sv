@@ -48,11 +48,14 @@ module project_TB;
     );
 
     /* test signal */
-    logic   [0:23] TEST_SIG = 24'b000100110001011101010011; // LSB -> MSB for readability of passing signal
+    logic   TEST_SIG []; // dynamic array declariation
+    int     SIG_LENGTH = 24; // number of bits to be tested
 
-    /* initialize clock signal */
+    /* initialization */
     initial begin
         CLOCK = 1'b1; // start clock signal high
+        TEST_SIG = new [SIG_LENGTH]; // instantiate TEST_SIG
+        TEST_SIG = { 0,0,0,1,0,0,1,1,0,0,0,1,0,1,1,1,0,1,0,1,0,0,1,1 }; // binary signal to test: 000100110001011101010011
     end
 
     /* start clock signal */
@@ -62,60 +65,17 @@ module project_TB;
  
     /* runtime signals */
     initial begin
-        /* initialisation */
+        /* setup */
         RESET <= 1'b1; // set:0, reset:1
         ENABLE <= 1'b1; // disable counter: 0, enable counter: 1
         #10 // wait 10ns/1 clock cycles
         RESET <= 1'b0; // set:0, reset:1
 
         /* send test signal */
-        SIGNAL_IN <= TEST_SIG[0];
-        #10
-        SIGNAL_IN <= TEST_SIG[1];
-        #10
-        SIGNAL_IN <= TEST_SIG[2];
-        #10
-        SIGNAL_IN <= TEST_SIG[3];
-        #10
-        SIGNAL_IN <= TEST_SIG[4];
-        #10
-        SIGNAL_IN <= TEST_SIG[5];
-        #10
-        SIGNAL_IN <= TEST_SIG[6];
-        #10
-        SIGNAL_IN <= TEST_SIG[7];
-        #10
-        SIGNAL_IN <= TEST_SIG[8];
-        #10
-        SIGNAL_IN <= TEST_SIG[9];
-        #10
-        SIGNAL_IN <= TEST_SIG[10];
-        #10
-        SIGNAL_IN <= TEST_SIG[11];
-        #10
-        SIGNAL_IN <= TEST_SIG[12];
-        #10
-        SIGNAL_IN <= TEST_SIG[13];
-        #10
-        SIGNAL_IN <= TEST_SIG[14];
-        #10
-        SIGNAL_IN <= TEST_SIG[15];
-        #10
-        SIGNAL_IN <= TEST_SIG[16];
-        #10
-        SIGNAL_IN <= TEST_SIG[17];
-        #10
-        SIGNAL_IN <= TEST_SIG[18];
-        #10
-        SIGNAL_IN <= TEST_SIG[19];
-        #10
-        SIGNAL_IN <= TEST_SIG[20];
-        #10
-        SIGNAL_IN <= TEST_SIG[21];
-        #10
-        SIGNAL_IN <= TEST_SIG[22];
-        #10
-        SIGNAL_IN <= TEST_SIG[23];
+        for (int i = 0; i < SIG_LENGTH; i++) begin
+            SIGNAL_IN = TEST_SIG[i];
+            #10;
+        end
     end 
 
 endmodule 

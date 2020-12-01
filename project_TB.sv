@@ -23,7 +23,7 @@ module project_TB;
     logic   ENABLE; // enable 
 
     /* input signals */
-    logic   SIGNAL_IN; // input signal to be tested for 01[0*]1
+    logic   SIGNAL_PI; // input signal to be tested for 01[0*]1
 
     /* 7-segment display signals */
     logic   [6:0] DISP0; // ones digit of loaded number
@@ -41,7 +41,7 @@ module project_TB;
         .rst (RESET), 
         .ena (ENABLE), 
 
-        .sig_to_test (SIGNAL_IN), 
+        .sig_to_test (SIGNAL_PIN), 
 
         .disp0 (DISP0), 
         .disp1 (DISP1), 
@@ -50,14 +50,14 @@ module project_TB;
     );
 
     /* test signal */
-    logic   TEST_SIG [];
-    //logic   [0:23] TEST_SIG = 24'b000100110001011101010011; // LSB -> MSB for readability of passing signal
+    logic   TEST_SIG []; // dynamic array declaration
+    int     sig_length = 24; // number of bit's in signal to be tested
 
     /* initialization */
     initial begin
-        CLOCK = 1'b1; // start clock signal high
-        TEST_SIG = new [24];
-       TEST_SIG = { 0,0,0,1,0,0,1,1,0,0,0,1,0,1,1,1,0,1,0,1,0,0,1,1 }; 
+        CLOCK = 1'b1; // initialize clock signal high
+        TEST_SIG = new [sig_length]; // instantiate TEST_SIG
+        TEST_SIG = { 0,0,0,1,0,0,1,1,0,0,0,1,0,1,1,1,0,1,0,1,0,0,1,1 }; // binary signal to test: 000100110001011101010011
     end
 
     /* start clock signal */
@@ -67,16 +67,16 @@ module project_TB;
  
     /* runtime signals */
     initial begin
-        /* initialisation */
+        /* setup */
         RESET <= 1'b1; // set:0, reset:1
         ENABLE <= 1'b1; // disable counter: 0, enable counter: 1
         #10 // wait 10ns/1 clock cycles
         RESET <= 1'b0; // set:0, reset:1
 
         /* send test signal */
-        foreach (TEST_SIG[i]) begin
-            SIGNAL_IN <= TEST_SIG[i];
-            #10
+        foreach (TEST_SIG[int i]) begin
+            SIGNAL_PIN = TEST_SIG[i];
+            #10;
         end
 
         /* halt */

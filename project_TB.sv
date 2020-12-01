@@ -50,11 +50,14 @@ module project_TB;
     );
 
     /* test signal */
-    logic   [0:23] TEST_SIG = 24'b000100110001011101010011; // LSB -> MSB for readability of passing signal
+    logic   TEST_SIG [];
+    //logic   [0:23] TEST_SIG = 24'b000100110001011101010011; // LSB -> MSB for readability of passing signal
 
-    /* initialize clock signal */
+    /* initialization */
     initial begin
         CLOCK = 1'b1; // start clock signal high
+        TEST_SIG = new [24];
+       TEST_SIG = { 0,0,0,1,0,0,1,1,0,0,0,1,0,1,1,1,0,1,0,1,0,0,1,1 }; 
     end
 
     /* start clock signal */
@@ -71,30 +74,10 @@ module project_TB;
         RESET <= 1'b0; // set:0, reset:1
 
         /* send test signal */
-        SIGNAL_IN <= TEST_SIG[0];   #10
-        SIGNAL_IN <= TEST_SIG[1];   #10
-        SIGNAL_IN <= TEST_SIG[2];   #10
-        SIGNAL_IN <= TEST_SIG[3];   #10
-        SIGNAL_IN <= TEST_SIG[4];   #10
-        SIGNAL_IN <= TEST_SIG[5];   #10
-        SIGNAL_IN <= TEST_SIG[6];   #10
-        SIGNAL_IN <= TEST_SIG[7];   #10
-        SIGNAL_IN <= TEST_SIG[8];   #10
-        SIGNAL_IN <= TEST_SIG[9];   #10
-        SIGNAL_IN <= TEST_SIG[10];  #10
-        SIGNAL_IN <= TEST_SIG[11];  #10
-        SIGNAL_IN <= TEST_SIG[12];  #10
-        SIGNAL_IN <= TEST_SIG[13];  #10
-        SIGNAL_IN <= TEST_SIG[14];  #10
-        SIGNAL_IN <= TEST_SIG[15];  #10
-        SIGNAL_IN <= TEST_SIG[16];  #10
-        SIGNAL_IN <= TEST_SIG[17];  #10
-        SIGNAL_IN <= TEST_SIG[18];  #10
-        SIGNAL_IN <= TEST_SIG[19];  #10
-        SIGNAL_IN <= TEST_SIG[20];  #10
-        SIGNAL_IN <= TEST_SIG[21];  #10
-        SIGNAL_IN <= TEST_SIG[22];  #10
-        SIGNAL_IN <= TEST_SIG[23];  #10
+        foreach (TEST_SIG[i]) begin
+            SIGNAL_IN <= TEST_SIG[i];
+            #10
+        end
 
         /* halt */
         #20 // ensure that all singals are in final position

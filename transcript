@@ -3,11 +3,11 @@
 # 2 compiles, 0 failed with no errors.
 vsim -gui work.project_TB work.sequence_detector
 # vsim -gui work.project_TB work.sequence_detector 
-# Start time: 03:40:39 on Dec 01,2020
+# Start time: 11:36:23 on Dec 01,2020
 # Loading sv_std.std
 # Loading work.project_TB
 # Loading work.sequence_detector
 add wave -position insertpoint sim:/project_TB/uut/*
-run 500
-# End time: 03:41:07 on Dec 01,2020, Elapsed time: 0:00:28
-# Errors: 0, Warnings: 5
+run 300
+# End time: 11:43:11 on Dec 01,2020, Elapsed time: 0:06:48
+# Errors: 0, Warnings: 2

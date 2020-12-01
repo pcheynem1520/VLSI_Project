@@ -15,7 +15,7 @@
 
 module sequence_detector(
     /* circuit control signals */
-    input   logic   clk, // main clock signal
+    input   logic   clk, // clock signal
     input   logic   rst, // reset
     input   logic   ena, // enable
 
@@ -23,15 +23,15 @@ module sequence_detector(
     input   logic   sig_to_test, // input signal to be tested for 01[0*]1
 
     /* 7-segment display signals */
-    output  logic   [6:0] disp0, // one’s digit
-    output  logic   [6:0] disp1, // tens digit
+    output  logic   [6:0] disp0, // ones digit of loaded number
+    output  logic   [6:0] disp1, // tens digit of loaded number
 
     /* output signals */
-    output  logic   z // T/F sequence detection
+    output  logic   z // flag triggered when sequence is detected
 );
 
-    /* variable assignments */
-    integer count_detect = 0; // counter of times sequence was detected
+    /* variables */
+    integer count_detect = 0; // number of times sequence is found between resets
 
     /* state register */
         /* states */
@@ -46,8 +46,7 @@ module sequence_detector(
     typedef enum logic [2:0]
     {start, first, success, second, unused_0, unused_1, success_delay, delay} statetype;
     statetype state_ENUM, next_state_ENUM;
-    // no idea why second array fixes combinational logic
-    logic [2:0] state, next_state;
+    logic [2:0] state, next_state; // no idea why second array fixes combinational logic
 
     /* next-state register */
     always_ff @(posedge clk) begin
@@ -59,11 +58,11 @@ module sequence_detector(
     end
 
     /* detection count */
-    always @(posedge clk) begin // not posedge in case of 2 consecutive detections
+    always @(posedge clk) begin
         if (rst) begin
             count_detect <= 0;
         end else if (ena) begin
-            if (z) begin
+            if (z) begin // not posedge in case of 2 consecutive detections
                 count_detect <= count_detect + 1;
             end
         end

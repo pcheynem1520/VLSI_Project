@@ -1,13 +1,6 @@
-# Compile of project_TB.sv was successful.
+# Compile of project_TB.sv failed with 1 errors.
 # Compile of sequence_detector.sv was successful.
-# 2 compiles, 0 failed with no errors.
-vsim -gui work.project_TB work.sequence_detector
-# vsim -gui work.project_TB work.sequence_detector 
-# Start time: 11:36:23 on Dec 01,2020
-# Loading sv_std.std
-# Loading work.project_TB
-# Loading work.sequence_detector
-add wave -position insertpoint sim:/project_TB/uut/*
-run 300
-# End time: 11:43:11 on Dec 01,2020, Elapsed time: 0:06:48
-# Errors: 0, Warnings: 2
+# 2 compiles, 1 failed with 1 error.
+# Compile of project_TB.sv failed with 1 errors.
+# Compile of sequence_detector.sv was successful.
+# 2 compiles, 1 failed with 1 error.

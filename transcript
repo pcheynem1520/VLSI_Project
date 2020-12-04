@@ -3,11 +3,36 @@
 # 2 compiles, 0 failed with no errors.
 vsim -gui work.project_TB work.sequence_detector
 # vsim -gui work.project_TB work.sequence_detector 
-# Start time: 11:36:23 on Dec 01,2020
+# Start time: 08:18:51 on Dec 04,2020
 # Loading sv_std.std
 # Loading work.project_TB
 # Loading work.sequence_detector
 add wave -position insertpoint sim:/project_TB/uut/*
 run 300
-# End time: 11:43:11 on Dec 01,2020, Elapsed time: 0:06:48
+run 50
+# Compile of project_TB.sv was successful.
+# Compile of sequence_detector.sv was successful.
+# 2 compiles, 0 failed with no errors.
+vsim -gui work.project_TB work.sequence_detector
+# End time: 08:20:50 on Dec 04,2020, Elapsed time: 0:01:59
+# Errors: 0, Warnings: 3
+# vsim -gui work.project_TB work.sequence_detector 
+# Start time: 08:20:50 on Dec 04,2020
+# Loading sv_std.std
+# Loading work.project_TB
+# Loading work.sequence_detector
+add wave -position insertpoint sim:/project_TB/uut/*
+run 300
+# Compile of project_TB.sv was successful.
+# Compile of sequence_detector.sv was successful.
+# 2 compiles, 0 failed with no errors.
+vsim -gui work.project_TB work.sequence_detector
+# End time: 08:28:55 on Dec 04,2020, Elapsed time: 0:08:05
 # Errors: 0, Warnings: 2
+# vsim -gui work.project_TB work.sequence_detector 
+# Start time: 08:28:55 on Dec 04,2020
+# Loading sv_std.std
+# Loading work.project_TB
+# Loading work.sequence_detector
+add wave -position insertpoint sim:/project_TB/uut/*
+run 300
